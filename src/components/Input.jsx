@@ -11,7 +11,7 @@ const Input = ({ labelname, errors, register, onBlur, type, name }) => {
         {...register(name)}
         type={type}
         onBlur={onBlur}
-        className="text-xl font-serif text-slate-950 rounded-lg"
+        className="text-xl font-serif text-slate-950 rounded-lg p-1 w-[300px]"
       />
       <p>{errors[name]?.message}</p>
     </>
