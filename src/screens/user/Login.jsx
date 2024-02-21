@@ -7,6 +7,7 @@ import { SchemaLogin } from "./user.schema";
 import axios from "axios";
 import Feedback from "../../components/Feedback";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 function Login() {
   const [feedback, setFeedback] = useState({ success: false, message: "" });
@@ -22,8 +23,8 @@ function Login() {
   const baseUrl = "https://ecommerce-backend-gr3e.onrender.com/api";
   console.log(feedback.message);
 
+  const navigate = useNavigate();
   const onSubmit = (formData) => {
-    console.log(formData);
     const url = `${baseUrl}/auth/login`;
     const data = {
       email: formData.email,
@@ -38,12 +39,20 @@ function Login() {
           success: true,
           message: "Successfully logged in!",
         });
-        localStorage.setItem("email", data.email);
+        //esari bhanda ni localstorage ma userDetails bhanera object nai banaidera yi details haru tyo object ko bhitra rakhdeko ramro practise
+        //ani harek page ma aile hamile localstorage bata get gardai yiniharulai access gariracham ni
+        //aba pachi context api(vimp concept) sikepachi, tyo details context api ma store garera pplication bhari use garna sakcham
+        localStorage.setItem("email", response.data.data.data.email);
+        localStorage.setItem("fullName", response.data.data.data.fullName);
+        localStorage.setItem("userId", response.data.data.data._id);
         localStorage.setItem(
           "access_token",
           JSON.stringify(response.data.data.data.access_token)
         );
-        console.log(response.data.data.data.access_token, "ggg");
+        navigate("/"); //home bhanekai / ho, so home ma redirect gardincha ani navigate(0) le reload garaidincha so aba private home page dekhcha not public home page
+        navigate(0); // khasma navigate ya redirect bhanne kura j use garne tarika ni tei ho kam hune ni tei ho, kei differences chai hola but aile ko lai tei ho bujha
+
+        console.log(response.data, "ggg");
 
         // let localdata = localStorage.getItem("email");
       })

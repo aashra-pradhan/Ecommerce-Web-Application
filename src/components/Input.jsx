@@ -1,6 +1,6 @@
 import React from "react";
 
-const Input = ({ labelname, errors, register, onBlur, type, name }) => {
+const Input = ({ labelname, errors, register, onBlur, type, name, value }) => {
   return (
     <>
       <label className="block text-xl font-serif text-slate-950" htmlFor="">
@@ -12,6 +12,7 @@ const Input = ({ labelname, errors, register, onBlur, type, name }) => {
         type={type}
         onBlur={onBlur}
         className="text-xl font-serif text-slate-950 rounded-lg p-1 w-[300px]"
+        value={value}
       />
       <p>{errors[name]?.message}</p>
     </>

@@ -12,3 +12,10 @@ export const SchemaLogin = object({
   email: string().email().required(),
   password: string().required().min(8),
 });
+
+export const SchemaAddProducts = object({
+  name: string().required(),
+  quantity: string().required(),
+});
+
+export const SchemaPurchase = object({});
