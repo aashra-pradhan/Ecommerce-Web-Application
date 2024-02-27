@@ -2,51 +2,44 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useParams } from "react-router-dom";
 import Navbar from "../../components/Navbar";
-import Button from "../../components/Button";
 import { NavLink } from "react-router-dom";
 import { useContext } from "react";
 import { CartContext } from "../../context/useCartContext";
 
 const Productpage = () => {
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const [productInfo, setProductInfo] = useState({});
   const [quantityCount, setQuantityCount] = useState(1);
   const accesstoken = localStorage.getItem("access_token");
   const name = localStorage.getItem("fullName");
-  const initial = name ? name.charAt(0) : ""; //Use ternary operator to conditionally assign initial
+  const initial = name ? name.charAt(0) : "";
   const userId = localStorage.getItem("userId");
 
-  const { products, setProducts, addToCart } = useContext(CartContext);
-
+  const { products, addToCart } = useContext(CartContext);
   let params = useParams();
-  // debugger;
-  console.log(params, "params");
-  //params hook le chai route ko parameters ko value return garcha ni the form of object, clg(console.log) garer herda huncha result
-  const baseUrl = "https://ecommerce-backend-gr3e.onrender.com/api";
 
+  const baseUrl = "https://ecommerce-backend-gr3e.onrender.com/api";
   const url = `${baseUrl}/product/details/${params.userId}/${params.productId}`;
-  // aba yo chai api ko url hai,,, route has nothing to do with api, hamile j naam ni use garna sakcham route ko lagi, but api chai
-  //thyakkai backend le j diyeko cha, tei sanga match hunuparcha
-  //also we did that dynamic route thing with params so that hamile card ko madhyam bata tyo userid nd productid route ma
-  //pathaidiyera route bata userid ra productid lina sakcham
-  //because tyo kura chahiyo ni yo key chahine wala api hit garna(userid and productid)
-  //ani jun product id cha tyo particular product ko matra details aaucha
-  const getProduct = () => {
+
+  const getProduct = async () => {
     try {
-      axios
-        .get(url)
-        .then((response) => setProductInfo(response.data.data, "data"))
-        .catch((err) => console.log(err, "rr"));
-      // setProductInfo(response.data.data);
-      console.log(productInfo, "ooo");
+      const response = await axios.get(url);
+      setProductInfo(response.data.data);
     } catch (error) {
-      console.error(error, "eeror");
+      console.error(error);
     }
   };
+
   useEffect(() => {
     getProduct();
   }, []);
 
-  console.log(products, "productInfo");
+  const updatedProductInfo = {
+    ...productInfo,
+    chosenQuantity: quantityCount,
+    totalPrice: quantityCount * productInfo.price,
+  };
+
   return (
     <>
       {accesstoken ? (
@@ -56,10 +49,6 @@ const Productpage = () => {
       )}
       <div className="productcontainer">
         <div className="productbox">
-          {/* productInfo fetch hunu agadi nai image render bhairathyo so kei ni dekhirako thiyena
-          code ko logic ma error haina ki browser kai kei extension haru le garda yo problem arise bhayeko huna sakcha,
-          so hamile eta k garyam to solve that is, yedi productImages wala array ma kei aayecha, tesko length 0 bhanda thulo 
-          cha bhane matrai image lai render garau, this way aba productInffo fetch bhaisakesi matra img render garcha */}
           {productInfo?.productImages?.length > 0 && (
             <img
               className="prod-image"
@@ -90,9 +79,9 @@ const Productpage = () => {
               <p className="prod-title">Quantity</p>
               <button
                 className="rounded w-full border-slate-900 rounded-lg bg-green-100 mt-2 hover:cursor-pointer counter-button"
-                disabled={quantityCount <= 1 ? true : false}
+                disabled={quantityCount <= 1}
                 onClick={() => {
-                  setQuantityCount(+quantityCount - 1);
+                  setQuantityCount((prevCount) => prevCount - 1);
                 }}
               >
                 -
@@ -105,68 +94,149 @@ const Productpage = () => {
                 max={productInfo?.quantity}
                 value={quantityCount}
                 onChange={(e) => {
-                  {
-                    e.target.value <= productInfo?.quantity
-                      ? setQuantityCount(e.target.value || 1)
-                      : // || --> e.target.value 0 bhaye chai setQualityCount 1 haldincha natra chai e.target.value nai rakhcha
-                        null;
-                  }
+                  const value = parseInt(e.target.value);
+                  setQuantityCount(value <= productInfo?.quantity ? value : 1);
                 }}
               />
               <button
                 className="rounded w-full border-slate-900 rounded-lg bg-green-100 mt-2 hover:cursor-pointer counter-button"
-                disabled={quantityCount < productInfo?.quantity ? false : true}
+                disabled={quantityCount >= productInfo?.quantity}
                 onClick={() => {
-                  setQuantityCount(+quantityCount + 1);
-                  // quantityCount lai string manirathyo, agadi + rakhder aba numbber mancha, tesaile agi 3+1=31 manirathyo
+                  setQuantityCount((prevCount) => prevCount + 1);
                 }}
               >
                 +
               </button>
-
-              {/* <select
-                {...register("quantity", { value: "647325e5ac7ba75355db8097" })}
-                name="quantity"
-              >
-                <option key={productInfo.userId} value="1">
-                  {category.categoryName}
-                </option>
-              </select> */}
             </div>
 
-            <div
-              className=" button-box"
-              onClick={() => {
-                // const updatedProductInfo = {
-                //   ...productInfo,
-                //   chosenQuantity: quantityCount,
-                //   totalPrice: quantityCount * productInfo.price,
-                // };
-                // let updatedArray = [];
-                // updatedArray.concat(products);
-                // updatedArray.push(productInfo);
-                // console.log(updatedArray, "array");
-                // setProducts(updatedArray);
-                // console.log(updatedProductInfo, "ppp");
-                // alert("done");
-                addToCart(productInfo);
-              }}
-            >
+            <div className="button-box">
               <button
                 type="submit"
-                className="buy-button rounded  border-slate-900 rounded-lg bg-green-100 mt-2 hover:cursor-pointer
-                "
+                className="buy-button rounded border-slate-900 rounded-lg bg-green-100 mt-2 hover:cursor-pointer"
+                onClick={() => {
+                  addToCart(updatedProductInfo);
+                }}
               >
                 Add to Cart
               </button>
-              <NavLink to="/product/purchase">
-                <button
-                  type="submit"
-                  className="buy-button rounded border-slate-900 rounded-lg bg-green-100 mt-2 hover:cursor-pointer"
-                >
-                  Buy now
-                </button>
-              </NavLink>
+              <button
+                type="submit"
+                className="buy-button rounded border-slate-900 rounded-lg bg-green-100 mt-2 hover:cursor-pointer"
+                onClick={() => setIsModalOpen(true)}
+              >
+                Buy now
+              </button>
+              <button
+                type="button"
+                className="buy-button rounded border-slate-900 rounded-lg bg-green-100 mt-2 hover:cursor-pointer"
+                onClick={() => setIsModalOpen(true)}
+              >
+                Chat with us
+              </button>
+
+              {isModalOpen && (
+                <>
+                  <div
+                    data-te-modal-init
+                    className="fixed left-0 top-0 z-[1055] hidden h-full w-full overflow-y-auto overflow-x-hidden outline-none"
+                    id="rightBottomModal"
+                    tabIndex="-1"
+                    aria-labelledby="rightBottomModalLabel"
+                    aria-hidden="true"
+                  >
+                    <div
+                      data-te-modal-dialog-ref
+                      className="pointer-events-none absolute bottom-7 right-7 h-auto w-full translate-x-[100%] opacity-0 transition-all duration-300 ease-in-out max-[576px]:right-auto min-[576px]:mx-auto min-[576px]:mt-7 min-[576px]:max-w-[500px]"
+                    >
+                      <div className="min-[576px]:shadow-[0_0.5rem_1rem_rgba(#000, 0.15)] pointer-events-auto relative flex w-full flex-col rounded-md border-none bg-white bg-clip-padding text-current shadow-lg outline-none dark:bg-neutral-600">
+                        <div className="flex flex-shrink-0 items-center justify-between rounded-t-md bg-primary-600 p-4 dark:border-b dark:border-neutral-500 dark:bg-transparent">
+                          <h5
+                            className="text-xl font-medium leading-normal text-white"
+                            id="rightBottomModalLabel"
+                          >
+                            Modal title
+                          </h5>
+                          <button
+                            type="button"
+                            className="box-content rounded-none border-none text-white hover:no-underline hover:opacity-75 focus:opacity-100 focus:shadow-none focus:outline-none"
+                            data-te-modal-dismiss
+                            aria-label="Close"
+                          >
+                            <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              fill="none"
+                              viewBox="0 0 24 24"
+                              strokeWidth="1.5"
+                              stroke="currentColor"
+                              className="h-6 w-6"
+                            >
+                              <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                d="M6 18L18 6M6 6l12 12"
+                              />
+                            </svg>
+                          </button>
+                        </div>
+                        <div
+                          className="relative grid flex-auto grid-cols-2 p-4"
+                          data-te-modal-body-ref
+                        >
+                          <div>
+                            <div
+                              className="relative w-full overflow-hidden bg-cover bg-no-repeat"
+                              data-te-ripple-init
+                              data-te-ripple-color="light"
+                            >
+                              <img
+                                src="https://tecdn.b-cdn.net/img/new/standard/city/041.webp"
+                                className="w-full"
+                              />
+                              <div
+                                className="absolute bottom-0 left-0 right-0 top-0 h-full w-full overflow-hidden bg-fixed"
+                                style={{
+                                  backgroundColor: "rgba(251, 251, 251, 0.15)",
+                                }}
+                              ></div>
+                            </div>
+                          </div>
+                          <div className="pl-6">
+                            <p className="mb-4 font-bold">
+                              Doloremque vero ex debitis veritatis?
+                            </p>
+                            <p className="mb-8">
+                              Lorem ipsum dolor sit amet, consectetur
+                              adipisicing elit. Quod itaque voluptate nesciunt
+                              laborum incidunt. Officia, quam consectetur. Earum
+                              eligendi aliquam illum alias.
+                            </p>
+                          </div>
+                        </div>
+                        <div className="flex flex-shrink-0 flex-wrap items-center justify-end rounded-b-md border-t-2 border-neutral-100 border-opacity-100 p-4 dark:border-opacity-50">
+                          <button
+                            type="button"
+                            className="inline-block rounded bg-primary px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white shadow-[0_4px_9px_-4px_#3b71ca] transition duration-150 ease-in-out hover:bg-primary-600 hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:bg-primary-600 focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:outline-none focus:ring-0 active:bg-primary-700 active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] dark:shadow-[0_4px_9px_-4px_rgba(59,113,202,0.5)] dark:hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)]"
+                            data-te-ripple-init
+                            data-te-ripple-color="light"
+                          >
+                            Read more
+                          </button>
+                          <button
+                            type="button"
+                            className="ml-1 inline-block rounded bg-primary-100 px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-primary-700 transition duration-150 ease-in-out hover:bg-primary-accent-100 focus:bg-primary-accent-100 focus:outline-none focus:ring-0 active:bg-primary-accent-200"
+                            data-te-modal-dismiss
+                            data-te-ripple-init
+                            data-te-ripple-color="light"
+                            onClick={() => setIsModalOpen(false)}
+                          >
+                            Close
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </>
+              )}
             </div>
           </div>
         </div>

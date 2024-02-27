@@ -217,13 +217,13 @@ button:focus-visible {
 .button-box {
   display: flex;
   flex-direction: row;
-  width: 50 %;
+  width: 50%;
   margin-top: 8%;
-  gap: 5%;
+  gap: 50px;
 }
 
 .buy-button {
-  width: 100%;
+  width: 140px;
   height: 150%;
   color: black;
   font-weight: bold;
@@ -246,17 +246,31 @@ button:focus-visible {
   display: flex;
   align-items: center;
   justify-content: center;
+  gap: 10%;
   font-weight: bold;
   font-size: 45px;
-  color: white;
+}
+
+.cart-nav-button {
+  width: 160px;
+  height: 40px;
+  font-size: 50%;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
 }
 
 .cart-item {
-  height: 250px;
+  height: 280px;
   width: 80%;
   border-width: 5px;
-  border-color: black;
+  border-color: coral;
   border-radius: 10px;
   margin: auto;
   margin-top: 2%;
+}
+
+.cart-items {
+}
+
+Navlink {
+  display: block;
 }

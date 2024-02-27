@@ -10,8 +10,6 @@ import { useState, React } from "react";
 import { CartProvider } from "./context/useCartContext";
 
 function App() {
-  // const [products, setProducts] = useState([]);
-
   const accesstoken = localStorage.getItem("access_token");
   console.log(accesstoken, "access");
   // Creating a parent component that wraps child components with a Provider

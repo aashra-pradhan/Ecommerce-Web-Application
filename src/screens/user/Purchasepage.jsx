@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { useForm } from "react-hook-form";
 import { object, string, number, date } from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -8,8 +8,10 @@ import { SchemaPurchase } from "./user.schema";
 import axios from "axios";
 import Feedback from "../../components/Feedback";
 import Navbar from "../../components/Navbar";
+import { CartContext } from "../../context/useCartContext";
 
 const Purchasepage = () => {
+  const { products } = useContext(CartContext);
   const [feedback, setFeedback] = useState({ success: false, message: "" });
   const accesstoken = JSON.parse(localStorage.getItem("access_token"));
   const name = localStorage.getItem("fullName");
@@ -28,20 +30,19 @@ const Purchasepage = () => {
     resolver: yupResolver(SchemaPurchase),
   });
 
-  const onSubmit = async (data) => {
-    console.log(data);
+  const onSubmit = async (formData) => {
+    console.log(formData);
     const url = `${baseUrl}/purchase-products`;
-
-    // eta kei image input testo kei chaina so normally garda ni hunthyo formData use gare bina, but just gardeko
-    const formData = new FormData();
-    // formData.append("nameOnCard", data.nameOnCard);
-    // formData.append("cardNum", data.cardNum);
-    // formData.append("expDate", data.expDate);
-    // formData.append("securityCode", data.securityCode);
-    // formData.append("zipCode", data.zipCode);
-    formData.append("customerId", userId);
-    formData.append("quantity", data.zipCode);
-    formData.append("products", data.zipCode);
+    // buyingProduct==="One"?const data = {
+    //   customerId: userId,
+    //   quantity: products.chosenQuantity,
+    //   products: products,
+    // };
+    const data = {
+      customerId: userId,
+      quantity: 1,
+      products: products,
+    };
 
     const config = {
       headers: { Authorization: "Bearer " + accesstoken },
@@ -49,7 +50,7 @@ const Purchasepage = () => {
     };
 
     axios
-      .post(url, formData, config)
+      .post(url, data, config)
       .then((response) => {
         console.log(response.data);
         setFeedback({
@@ -128,6 +129,19 @@ const Purchasepage = () => {
               name={"zipCode"}
             />
           </div>
+          {/* <div>
+            <label
+              className="block text-xl font-serif text-slate-950"
+              htmlFor=""
+            >
+              Purchase
+            </label>
+            <select {...register("buyingProduct")} name="buyingProduct">
+              <option value="One">Buy only this product </option>
+              <option value="All">Buy all products in cart </option>
+            </select>
+          </div> */}
+
           <div className="pt-8">
             <Button type={"submit"} value={"Buy"} />
           </div>
