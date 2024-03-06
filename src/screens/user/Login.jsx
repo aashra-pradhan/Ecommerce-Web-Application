@@ -8,9 +8,14 @@ import axios from "axios";
 import Feedback from "../../components/Feedback";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useContext } from "react";
+import { PurchaseContext } from "../../context/usePurchaseContext";
 
 function Login() {
   const [feedback, setFeedback] = useState({ success: false, message: "" });
+  const { purchasedProducts, setPurchasedProducts } =
+    useContext(PurchaseContext);
+
   const {
     register,
     handleSubmit,
@@ -35,6 +40,7 @@ function Login() {
       .post(url, data)
       .then((response) => {
         console.log(response.data);
+
         setFeedback({
           success: true,
           message: "Successfully logged in!",
@@ -49,8 +55,14 @@ function Login() {
           "access_token",
           JSON.stringify(response.data.data.data.access_token)
         );
+        localStorage.setItem(
+          "purchasedItems",
+          JSON.stringify(response.data.data.data.purchasedProducts)
+        );
+
         navigate("/"); //home bhanekai / ho, so home ma redirect gardincha ani navigate(0) le reload garaidincha so aba private home page dekhcha not public home page
-        navigate(0); // khasma navigate ya redirect bhanne kura j use garne tarika ni tei ho kam hune ni tei ho, kei differences chai hola but aile ko lai tei ho bujha
+        navigate(0);
+        // khasma navigate ya redirect bhanne kura j use garne tarika ni tei ho kam hune ni tei ho, kei differences chai hola but aile ko lai tei ho bujha
 
         console.log(response.data, "ggg");
 

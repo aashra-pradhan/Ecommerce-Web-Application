@@ -2,7 +2,8 @@ import React, { useEffect, useState } from "react";
 import { createContext } from "react";
 
 export const CartContext = createContext();
-// createContext({ products, setProducts, addToCart }) esari chai context bhitra k k rakhecham bhanera specify gareko.
+// createContext({ products, setProducts, addToCart }) esari chai context bhitra k k rakhecham bhanera specify garna milcha, nagarda ni huncha,
+// kei asar pardaina.
 
 // khali array initialize gareko for products ni tyo array bhitra chai objects aaucha, every product ko euta object.
 
@@ -12,7 +13,8 @@ export const CartProvider = ({ children }) => {
       ? JSON.parse(localStorage.getItem("cartItems"))
       : []
   );
-  const [activeProduct, setActiveProduct] = useState({});
+  const [activeProduct, setActiveProduct] = useState([]);
+  const [productsBought, setProductsBought] = useState([]);
 
   const addToCart = (item) => {
     const isItemInCart = products.find((cartItem) => cartItem._id === item._id); // check if the item is already in the cart
@@ -57,6 +59,16 @@ export const CartProvider = ({ children }) => {
     // }
   };
 
+  // Function to handle purchase
+  const handlePurchase = (product) => {
+    console.log("Products bought");
+    setProductsBought([...productsBought, product]);
+    removeFromCart(product._id);
+  };
+  const handlePurchaseAll = (product) => {
+    clearCart();
+  };
+
   useEffect(() => {
     localStorage.setItem("cartItems", JSON.stringify(products));
   }, [products]);
@@ -78,6 +90,10 @@ export const CartProvider = ({ children }) => {
         removeFromCart,
         activeProduct,
         setActiveProduct,
+        productsBought,
+        setProductsBought,
+        handlePurchase,
+        handlePurchaseAll
       }}
     >
       {children}

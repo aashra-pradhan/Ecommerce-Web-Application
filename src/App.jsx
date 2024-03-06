@@ -8,6 +8,7 @@ import Private from "./routes/Private"; // Import Private component
 import Home from "./screens/user/Home";
 import { useState, React } from "react";
 import { CartProvider } from "./context/useCartContext";
+import { PurchaseProvider } from "./context/usePurchaseContext";
 
 function App() {
   const accesstoken = localStorage.getItem("access_token");
@@ -16,7 +17,9 @@ function App() {
 
   return (
     <>
-      <CartProvider>{!accesstoken ? <Public /> : <Private />}</CartProvider>
+      <PurchaseProvider>
+        <CartProvider>{!accesstoken ? <Public /> : <Private />}</CartProvider>
+      </PurchaseProvider>
     </>
   );
 }

@@ -12,7 +12,7 @@ import { CartContext } from "../../context/useCartContext";
 import { PurchaseContext } from "../../context/usePurchaseContext";
 
 const Purchasepage = () => {
-  const { products, activeProduct, handlePurchase } = useContext(CartContext);
+  const { products, handlePurchaseAll } = useContext(CartContext);
   const { purchasedProducts, setPurchasedProducts } =
     useContext(PurchaseContext);
   const [feedback, setFeedback] = useState({ success: false, message: "" });
@@ -44,7 +44,7 @@ const Purchasepage = () => {
     const data = {
       customerId: userId,
       quantity: 1,
-      products: activeProduct,
+      products: products,
     };
 
     const config = {
@@ -56,9 +56,11 @@ const Purchasepage = () => {
       .post(url, data, config)
       .then((response) => {
         console.log(response.data);
-        setPurchasedProducts([...purchasedProducts, data.products]);
+        data.products.map((item) => {
+          setPurchasedProducts([...purchasedProducts, item]);
+        });
         //buy api hit bhaye pachi my purchases lai immediately dekhauna, natra login wala api ma mara aairahuncha ni ta purchased products
-        handlePurchase(activeProduct[0]);
+        handlePurchaseAll();
         setFeedback({
           success: true,
           message: "Product purchased!",
@@ -87,7 +89,7 @@ const Purchasepage = () => {
       )}
       <div className="addProducts-form">
         <p className="text-5xl p-5 font-thin text-slate-950 font-serif mb-8">
-          Buy Product
+          Buy All Products in Cart
         </p>
         <form className="flex flex-col gap-5" onSubmit={handleSubmit(onSubmit)}>
           <div>

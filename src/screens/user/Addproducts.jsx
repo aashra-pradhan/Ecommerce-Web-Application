@@ -36,8 +36,10 @@ const Addproducts = () => {
     handleSubmit,
     getValues,
     watch,
+
     formState: { errors },
   } = useForm({
+    // defaultValues: {productData ? productData : initialData},
     resolver: yupResolver(SchemaAddProducts),
   });
 
@@ -181,3 +183,16 @@ const Addproducts = () => {
 };
 
 export default Addproducts;
+
+// //
+// name;
+// quantity;
+// price;
+
+// get by id
+
+const initialData = {
+  name: "hello",
+  quantity: "",
+  price: "",
+};

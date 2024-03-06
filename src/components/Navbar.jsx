@@ -45,10 +45,11 @@ const Navbar = ({ isLoggedIn, startingLetter }) => {
                 className="profile-title text-white rounded-md px-3 py-2 text-lg font-medium"
                 onClick={() => {
                   alert("Logging out!");
-                  localStorage.removeItem("_id");
+                  localStorage.removeItem("userId");
                   localStorage.removeItem("fullName");
                   localStorage.removeItem("email");
                   localStorage.removeItem("access_token");
+                  localStorage.removeItem("purchasedItems");
                   navigate(0); //page reload gardincha so aba public home page dekhaidincha, not private
                 }}
               >

@@ -7,8 +7,13 @@ import Cart from "../screens/user/Cart";
 import Home from "../screens/user/Home";
 import Profile from "../screens/user/Profile";
 import Addproducts from "../screens/user/Addproducts";
+import Myproducts from "../screens/user/Myproducts";
 import Productpage from "../screens/user/Productpage";
 import Purchasepage from "../screens/user/Purchasepage";
+import Addpromotion from "../screens/user/Addpromotion";
+import Mypurchases from "../screens/user/Mypurchases";
+import Purchaseallpage from "../screens/user/Purchaseallpage";
+import Ratingpage from "../screens/user/Ratingpage";
 const Private = () => {
   return (
     <>
@@ -22,12 +27,23 @@ const Private = () => {
             element={<Productpage />}
           />
           <Route path="/product/purchase" element={<Purchasepage />} />
+          <Route path="/product/purchaseall" element={<Purchaseallpage />} />
+          <Route
+            path="/ratingpage/:userId/:productId"
+            element={<Ratingpage />}
+          />
           {/* esari :userId :productId garera dynamic route set gareko ho, tyaha j ni values aauna sakcha bhanera, 
 here userId and productId are parameters(params) */}
           <Route
             path="/dashboard"
             children={[
               <Route path="/dashboard/products" element={<Addproducts />} />,
+              <Route path="/dashboard/my-products" element={<Myproducts />} />,
+              <Route path="/dashboard/add-promo" element={<Addpromotion />} />,
+              <Route
+                path="/dashboard/my-purchases"
+                element={<Mypurchases />}
+              />,
             ]}
             element={<Dashboard />}
           />
