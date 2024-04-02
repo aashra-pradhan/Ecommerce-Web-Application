@@ -7,9 +7,11 @@ import { SchemaSignUp } from "./user.schema";
 import axios from "axios";
 import Feedback from "../../components/Feedback";
 import { useState } from "react";
+import { FeedbackContext } from "../../context/useFeedbackContext";
+import { useContext } from "react";
 
 function SignUp() {
-  const [feedback, setFeedback] = useState({ success: false, message: "" });
+  const { feedback, setFeedback } = useContext(FeedbackContext);
   const {
     register,
     handleSubmit,

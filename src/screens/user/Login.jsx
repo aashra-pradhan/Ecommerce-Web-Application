@@ -10,9 +10,12 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useContext } from "react";
 import { PurchaseContext } from "../../context/usePurchaseContext";
+import apiRequest from "../../api/api_call";
+import { toast } from "react-toastify";
 
+//default export ho ni ta so {} ma halnupardaina, named export bhako bhaye chai halnuparthyo {} ma
 function Login() {
-  const [feedback, setFeedback] = useState({ success: false, message: "" });
+  // const [feedback, setFeedback] = useState({ success: false, message: "" });
   const { purchasedProducts, setPurchasedProducts } =
     useContext(PurchaseContext);
 
@@ -25,61 +28,61 @@ function Login() {
     resolver: yupResolver(SchemaLogin),
   });
 
-  const baseUrl = "https://ecommerce-backend-gr3e.onrender.com/api";
-  console.log(feedback.message);
+  // const baseUrl = "https://ecommerce-backend-gr3e.onrender.com/api";
+  // console.log(feedback.message);
 
   const navigate = useNavigate();
-  const onSubmit = (formData) => {
-    const url = `${baseUrl}/auth/login`;
-    const data = {
+  const apiDetails = {
+    urlEndpoint: "/auth/login",
+    requestMethod: "POST",
+    authentication: false,
+  };
+  const onSubmit = async (formData) => {
+    // const url = `${baseUrl}/auth/login`;
+    const reqData = {
       email: formData.email,
       password: formData.password,
     };
-    console.log(formData, "sss");
-    axios
-      .post(url, data)
-      .then((response) => {
-        console.log(response.data);
+    // console.log(data, "sss");
 
-        setFeedback({
-          success: true,
-          message: "Successfully logged in!",
-        });
-        //esari bhanda ni localstorage ma userDetails bhanera object nai banaidera yi details haru tyo object ko bhitra rakhdeko ramro practise
-        //ani harek page ma aile hamile localstorage bata get gardai yiniharulai access gariracham ni
-        //aba pachi context api(vimp concept) sikepachi, tyo details context api ma store garera pplication bhari use garna sakcham
-        localStorage.setItem("email", response.data.data.data.email);
-        localStorage.setItem("fullName", response.data.data.data.fullName);
-        localStorage.setItem("userId", response.data.data.data._id);
-        localStorage.setItem(
-          "access_token",
-          JSON.stringify(response.data.data.data.access_token)
-        );
-        localStorage.setItem(
-          "purchasedItems",
-          JSON.stringify(response.data.data.data.purchasedProducts)
-        );
+    let data1 = await apiRequest(apiDetails, reqData, null);
+    //yo api_hit ma ki ta response aaucha ki ta error aaucha
 
-        navigate("/"); //home bhanekai / ho, so home ma redirect gardincha ani navigate(0) le reload garaidincha so aba private home page dekhcha not public home page
-        navigate(0);
-        // khasma navigate ya redirect bhanne kura j use garne tarika ni tei ho kam hune ni tei ho, kei differences chai hola but aile ko lai tei ho bujha
+    //esari bhanda ni localstorage ma userDetails bhanera object nai banaidera yi details haru tyo object ko bhitra rakhdeko ramro practise
+    //ani harek page ma aile hamile localstorage bata get gardai yiniharulai access gariracham ni
+    //aba pachi context api(vimp concept) sikepachi, tyo details context api ma store garera pplication bhari use garna sakcham
 
-        console.log(response.data, "ggg");
+    console.log(data1, "check12");
 
-        // let localdata = localStorage.getItem("email");
-      })
-      .catch(function (error) {
-        console.error(error);
-        console.log("Error is recognized!");
-        if (error.response) {
-          setFeedback({ success: false, message: error.response.data.message });
-        } else {
-          setFeedback({
-            success: false,
-            message: "Network error!Try again in some time.",
-          });
-        }
-      });
+    if (data1.status == 200 || data1.status == 201) {
+      toast.success(data1.data.message);
+
+      localStorage.setItem("email", data1.data.data.data.email);
+      localStorage.setItem("fullName", data1.data.data.data.fullName);
+      localStorage.setItem("userId", data1.data.data.data._id);
+      localStorage.setItem(
+        "access_token",
+        JSON.stringify(data1.data.data.data.access_token)
+      );
+      localStorage.setItem(
+        "refresh_token",
+        JSON.stringify(data1.data.data.data.refresh_token)
+      );
+
+      localStorage.setItem(
+        "purchasedItems",
+        JSON.stringify(data1.data.data.data.purchasedProducts)
+      );
+
+      navigate("/"); //home bhanekai / ho, so home ma redirect gardincha ani navigate(0) le reload garaidincha so aba private home page dekhcha not public home page
+      navigate(0);
+    } else {
+      toast.error(data1.data.message);
+    }
+
+    // khasma navigate ya redirect bhanne kura j use garne tarika ni tei ho kam hune ni tei ho, kei differences chai hola but aile ko lai tei ho bujha
+
+    let localdata = localStorage.getItem("email");
   };
 
   return (
@@ -118,8 +121,22 @@ function Login() {
           </div>
         </form>
 
-        <Feedback success={feedback.success} message={feedback.message} />
+        {/* <Feedback success={feedback.success} message={feedback.message} /> */}
       </div>
+
+      {/* {api_hit.data.status === 200
+        ? toast.success("Login success!", {
+            position: "top-right",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "colored",
+            // transition: Bounce,
+          })
+        : null} */}
     </>
   );
 }

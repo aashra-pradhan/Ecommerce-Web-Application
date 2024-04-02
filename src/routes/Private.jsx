@@ -14,6 +14,8 @@ import Addpromotion from "../screens/user/Addpromotion";
 import Mypurchases from "../screens/user/Mypurchases";
 import Purchaseallpage from "../screens/user/Purchaseallpage";
 import Ratingpage from "../screens/user/Ratingpage";
+import SearchResults from "../screens/user/SearchResults";
+import ChatSection from "../screens/user/ChatSection";
 const Private = () => {
   return (
     <>
@@ -26,6 +28,8 @@ const Private = () => {
             path="/product/detail/:userId/:productId"
             element={<Productpage />}
           />
+          <Route path="/products" element={<SearchResults />} />
+          {/* <Route path="/product" element={<SearchResults />} /> */}
           <Route path="/product/purchase" element={<Purchasepage />} />
           <Route path="/product/purchaseall" element={<Purchaseallpage />} />
           <Route
@@ -43,6 +47,10 @@ here userId and productId are parameters(params) */}
               <Route
                 path="/dashboard/my-purchases"
                 element={<Mypurchases />}
+              />,
+              <Route
+                path="/dashboard/chat-section"
+                element={<ChatSection />}
               />,
             ]}
             element={<Dashboard />}

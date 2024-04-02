@@ -42,6 +42,14 @@ const Dashboard = () => {
                 My Purchases
               </NavLink>
             </div>
+            <div className="products">
+              <NavLink
+                to="/dashboard/chat-section"
+                className="dashboard-title text-white rounded-md px-5 mt-4 text-lg font-medium"
+              >
+                Chats
+              </NavLink>
+            </div>
 
             {/* <div className="stats">
               <NavLink

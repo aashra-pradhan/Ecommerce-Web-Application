@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Card from "./Card";
 import axios from "axios";
+import apiRequest from "../api/api_call";
 
 const Categorysection = ({ categoryId, title }) => {
   // const [categoryid, setCategoryId] = useState("");
@@ -8,27 +9,32 @@ const Categorysection = ({ categoryId, title }) => {
   const accesstoken = JSON.parse(localStorage.getItem("access_token"));
   const userId = localStorage.getItem("userId");
 
-  const baseUrl = "https://ecommerce-backend-gr3e.onrender.com/api";
+  const apiDetails = {
+    urlEndpoint: `/products?categoryId=${categoryId}`,
+    requestMethod: "GET",
+    authentication: false,
+  };
 
-  const getProducts = async () => {
-    try {
-      const response = await axios.get(
-        `${baseUrl}/products?categoryId=${categoryId}`
-      );
+  // console.log(data, "sss");
+  async function apiGet() {
+    let getProducts = await apiRequest(apiDetails, null, null);
+    //yo api_hit ma ki ta response aaucha ki ta error aaucha
+    console.log(getProducts, "ttttt");
+    //esari bhanda ni localstorage ma userDetails bhanera object nai banaidera yi details haru tyo object ko bhitra rakhdeko ramro practise
+    //ani harek page ma aile hamile localstorage bata get gardai yiniharulai access gariracham ni
+    //aba pachi context api(vimp concept) sikepachi, tyo details context api ma store garera pplication bhari use garna sakcham
 
-      const filteredData = response.data.data.filter(
+    if (getProducts.status == 200) {
+      const filteredData = getProducts.data.data.filter(
         (data) => data.userId != userId
       );
 
       setProductDetail(filteredData);
-      console.log(response.data.data, "provv");
-    } catch (error) {
-      console.error(error);
     }
-  };
+  }
 
   useEffect(() => {
-    getProducts();
+    apiGet();
   }, [categoryId]);
 
   return (

@@ -6,6 +6,7 @@ import Home from "../screens/user/Home";
 import SignUp from "../screens/user/SignUp";
 import Login from "../screens/user/Login";
 import Productpage from "../screens/user/Productpage";
+import SearchResults from "../screens/user/SearchResults";
 
 const Public = () => {
   return (
@@ -18,6 +19,8 @@ const Public = () => {
         <Routes>
           <Route index element={<Home />} />
           <Route path="/product" element={<Productpage />} />
+          <Route path="/product" element={<Productpage />} />
+          <Route path="/products" element={<SearchResults />} />
           <Route
             path="/product/detail/:userId/:productId"
             element={<Productpage />}

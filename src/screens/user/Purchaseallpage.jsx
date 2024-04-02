@@ -10,12 +10,13 @@ import Feedback from "../../components/Feedback";
 import Navbar from "../../components/Navbar";
 import { CartContext } from "../../context/useCartContext";
 import { PurchaseContext } from "../../context/usePurchaseContext";
+import { FeedbackContext } from "../../context/useFeedbackContext";
 
 const Purchasepage = () => {
   const { products, handlePurchaseAll } = useContext(CartContext);
   const { purchasedProducts, setPurchasedProducts } =
     useContext(PurchaseContext);
-  const [feedback, setFeedback] = useState({ success: false, message: "" });
+  const { feedback, setFeedback } = useContext(FeedbackContext);
   const accesstoken = JSON.parse(localStorage.getItem("access_token"));
   const name = localStorage.getItem("fullName");
   const initial = name ? name.charAt(0) : ""; //Use ternary operator to conditionally assign initial

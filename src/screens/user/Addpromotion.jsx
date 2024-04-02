@@ -4,9 +4,13 @@ import Input from "../../components/Input";
 import Button from "../../components/Button";
 import axios from "axios";
 import Feedback from "../../components/Feedback";
+import { FeedbackContext } from "../../context/useFeedbackContext";
+import { useContext } from "react";
+import apiRequest from "../../api/api_call";
+import { ToastContainer, toast } from "react-toastify";
 
 const Addpromotion = () => {
-  const [feedback, setFeedback] = useState({ success: false, message: "" });
+  const { feedback, setFeedback } = useContext(FeedbackContext);
 
   const baseUrl = "https://ecommerce-backend-gr3e.onrender.com/api";
   const accesstoken = JSON.parse(localStorage.getItem("access_token"));
@@ -23,45 +27,71 @@ const Addpromotion = () => {
   });
 
   const onSubmit = async (data) => {
-    console.log(data);
-    const url = `${baseUrl}/create-promotion`;
+    console.log(data, "daa");
+    // const url = `${baseUrl}/create-promotion`;
     const formData = new FormData();
     formData.append("bannerName", data.bannerName);
     formData.append("validTill", data.validTill);
 
     // A file <input> element
-    const images = document.getElementsByName("bannerImage")[0]; // Get the first element in the collection
-    formData.append("bannerImage", images.files[0]);
+    for (let i = 0; i < data.bannerImage.length; i++) {
+      formData.append("bannerImage", data.bannerImage[i]);
+    }
 
     // "Bearer token" header object, axios bata pathau, to add product , for authorization
 
-    const config = {
-      headers: { Authorization: "Bearer " + accesstoken },
-      // not authorized to post bhanne error aairathyo, because accesstoken ta string ma liyrathyam loccal storage bata, because stringify garera store garirathyam local storge ma,,,,tara yaha ta json value mai chahincha bearer sanga so mathi access token lai json.parse garera yo problem solve bhayo
+    // const config = {
+    //   headers: { Authorization: "Bearer " + accesstoken },
+    //   // not authorized to post bhanne error aairathyo, because accesstoken ta string ma liyrathyam loccal storage bata, because stringify garera store garirathyam local storge ma,,,,tara yaha ta json value mai chahincha bearer sanga so mathi access token lai json.parse garera yo problem solve bhayo
+    // };
+    const apiDetails = {
+      urlEndpoint: "/create-promotion",
+      requestMethod: "POST",
+      reqBodyType: "FORM-DATA",
+      authentication: true,
     };
 
-    axios
-      .post(url, formData, config)
-      .then((response) => {
-        console.log(response.data);
-        setFeedback({
-          success: true,
-          message: "Successfully banner added!",
-        });
-      })
-      .catch(function (error) {
-        console.error(error);
-        console.log("Error is recognized!");
-        if (error.response) {
-          setFeedback({ success: false, message: error.response.data.message });
-        } else {
-          setFeedback({
-            success: false,
-            message: "Network error!Try again in some time.",
-          });
-        }
-      });
+    const reqData = formData;
+    // console.log(data, "sss");
+
+    let data1 = await apiRequest(apiDetails, reqData, null);
+    //yo api_hit ma ki ta response aaucha ki ta error aaucha
+
+    //esari bhanda ni localstorage ma userDetails bhanera object nai banaidera yi details haru tyo object ko bhitra rakhdeko ramro practise
+    //ani harek page ma aile hamile localstorage bata get gardai yiniharulai access gariracham ni
+    //aba pachi context api(vimp concept) sikepachi, tyo details context api ma store garera pplication bhari use garna sakcham
+
+    console.log(data1, "check12");
+
+    if (data1.data.status == 200 || data1.data.status == 201) {
+      toast.success(data1.data.message);
+    } else {
+      toast.error(data1.data.message);
+    }
   };
+
+  //   axios
+  //     .post(url, formData, config)
+  //     .then((response) => {
+  //       console.log(response.data);
+  //       setFeedback({
+  //         success: true,
+  //         message: "Successfully banner added!",
+  //       });
+  //     })
+  //     .catch(function (error) {
+  //       console.error(error);
+  //       console.log("Error is recognized!");
+  //       if (error.response) {
+  //         setFeedback({ success: false, message: error.response.data.message });
+  //       } else {
+  //         setFeedback({
+  //           success: false,
+  //           message: "Network error!Try again in some time.",
+  //         });
+  //       }
+  //     });
+  // };
 
   return (
     <>
@@ -69,7 +99,11 @@ const Addpromotion = () => {
         <p className="text-5xl p-5 font-thin text-slate-950 font-serif mb-8">
           Add Promo Banner
         </p>
-        <form className="flex flex-col gap-5" onSubmit={handleSubmit(onSubmit)}>
+        <form
+          className="flex flex-col gap-5"
+          onSubmit={handleSubmit(onSubmit)}
+          enctype="multipart/form-data"
+        >
           <div>
             <Input
               labelname={"Banner Name"}

@@ -1,14 +1,16 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import axios from "axios";
 import { useParams } from "react-router-dom";
 import Navbar from "../../components/Navbar";
 import { NavLink } from "react-router-dom";
 import { useContext } from "react";
 import { CartContext } from "../../context/useCartContext";
-import { useForm } from "react-hook-form";
+import { get, useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import Feedback from "../../components/Feedback";
+import socketIO from "socket.io-client";
 
+const socket = socketIO.connect("https://ecommerce-backend-gr3e.onrender.com");
 const Productpage = () => {
   const [edit, setEdit] = useState({ value: false, text: "Edit product" });
   const [input, setInput] = useState("");
@@ -35,19 +37,57 @@ const Productpage = () => {
   const name = localStorage.getItem("fullName");
   const initial = name ? name.charAt(0) : "";
   const user1Id = localStorage.getItem("userId");
+  const fullName = localStorage.getItem("fullName");
 
   const { products, addToCart, setActiveProduct } = useContext(CartContext);
   let params = useParams();
+  const chatListRef = useRef(null);
+  const [selectedChat, setSelectedChat] = useState("");
 
   const baseUrl = "https://ecommerce-backend-gr3e.onrender.com/api";
   const url = `${baseUrl}/product/details/${params.userId}/${params.productId}`;
 
+  // console.log(socket, "socket");
+
+  // // (Socket for receiving message) Runs whenever a socket event is recieved from the server
+  // useEffect(() => {
+  //   socket.on("receive message", (data) => {
+  //     console.log(data, "socketreceive");
+  //     // setMessagesReceived((state) => [
+  //     //   ...state,
+  //     //   {
+  //     //     message: data.message,
+  //     //     username: data.username,
+  //     //     __createdtime__: data.__createdtime__,
+  //     //   },
+  //     // ]);
+  //   });
+
+  //   // Remove event listener on component unmount
+  //   return () => socket.off("receive message");
+  // }, []);
+
+  //socket for sending msg
+  // console.log(productInfo, "ppp");
+
+  const clickSend = () => {
+    console.log("clikc");
+    socket.emit("send message", {
+      senderId: user1Id,
+      receiverId: customerId,
+      message: chatMessage,
+      senderName: localstorageName,
+      socketId: socket.id,
+    });
+  };
+
   const getProduct = async () => {
     try {
       const response = await axios.get(url);
+      console.log(response.data, "etail");
       setProductInfo(response.data.data);
       setEditedProduct(response.data.data);
-      console.log(productInfo);
+      console.log(productInfo, "yyyyy ");
     } catch (error) {
       console.error(error);
     }
@@ -63,12 +103,14 @@ const Productpage = () => {
     totalPrice: quantityCount * productInfo.price,
   };
 
-  const clickSend = async () => {
+  console.log(productInfo, "aaaa");
+  const sendMsg = async () => {
     const url = `${baseUrl}/send-message`;
     const data = {
       senderId: user1Id,
       receiverId: productInfo.userId,
       message: chatMessage,
+      senderUsername: fullName,
     };
     const config = {
       headers: { Authorization: "Bearer " + accesstoken },
@@ -79,6 +121,13 @@ const Productpage = () => {
       .post(url, data, config)
       .then((response) => {
         getMessages();
+        socket.emit("send message", {
+          senderId: user1Id,
+          receiverId: customerId,
+          message: chatMessage,
+          senderName: localstorageName,
+          socketId: socket.id,
+        });
         console.log(response.data);
       })
       .catch(function (error) {
@@ -87,8 +136,10 @@ const Productpage = () => {
       });
   };
 
+  console.log(socket, "spcket");
+
   const getMessages = async () => {
-    const url = `${baseUrl}/fetch-messages?senderId=${user1Id}&receiverId=${productInfo.userId}`;
+    const url = `${baseUrl}/fetch-messages?senderId=${user1Id}&receiverId=${productInfo?.userId}`;
     const config = {
       headers: { Authorization: "Bearer " + accesstoken },
       // not authorized to post bhanne error aairathyo, because accesstoken ta string ma liyrathyam loccal storage bata, because stringify garera store garirathyam local storge ma,,,,tara yaha ta json value mai chahincha bearer sanga so mathi access token lai json.parse garera yo problem solve bhayo
@@ -97,18 +148,30 @@ const Productpage = () => {
       const response = await axios.get(url, config);
 
       console.log(response.data.data, "msggg");
-      setBackendMessages(response.data.data);
+      setBackendMessages(response.data.data.messages);
     } catch (error) {
       console.error(error);
     }
   };
 
   console.log(productInfo, "zzz");
-  useEffect(() => {
-    if (productInfo.userId) {
-      getMessages();
-    }
-  }, [productInfo]);
+  // useEffect(() => {
+  //   // if (productInfo.userId) {
+  //   // getMessages();
+  //   // }
+  //   socket.on("send message", (data) => {
+  //     // debugger;
+  //     // if (
+  //     //   (data.receiverId === user1Id && data.senderId === customerId) ||
+  //     //   (data.senderId === user1Id && data.receiverId === customerId)
+  //     console.log(customerMessages, "kkk");
+  //     getMessages();
+  //     setCustomerMessages((prevMessages) => [...prevMessages, data]);
+  //     // ) {
+
+  //     // }
+  //   });
+  // }, [socket]);
 
   const clickEditDone = async () => {
     const formData = new FormData();
@@ -169,6 +232,32 @@ const Productpage = () => {
         console.log("Error is recognized!");
       });
   };
+
+  // useEffect(() => {
+  //   socket.on("receive message", (data) => {
+  //     console.log(data, "here");
+  //     // if (
+  //     //   data.senderId === user1Id &&
+  //     //   data.receiverId === productInfo?.userId
+  //     // ) {
+  //     setBackendMessages([...backendMessages, data]);
+  //     getMessages();
+  //     // }
+  //   });
+  // }, [socket]);
+
+  //to set the last possible msg as selected chat
+  useEffect(() => {
+    setSelectedChat(backendMessages[backendMessages.length - 1]?.message);
+  }, [backendMessages]);
+
+  useEffect(() => {
+    // Scroll to the selected chat when it changes
+    if (selectedChat && chatListRef.current) {
+      chatListRef.current.scrollTop = chatListRef.current.scrollHeight;
+      // chatListRef.current.scrollTop = chatListRef.current.scrollHeight; sets the scroll position of the chat list to its maximum value, which effectively scrolls it to the bottom. This ensures that the most recent chat message is always visible to the user without needing to manually scroll down.
+    }
+  }, [selectedChat]);
   return (
     <>
       {accesstoken ? (
@@ -350,7 +439,10 @@ const Productpage = () => {
                   <button
                     type="button"
                     className="buy-button rounded border-slate-900 rounded-lg bg-green-100 mt-2 hover:cursor-pointer"
-                    onClick={() => setIsModalOpen(true)}
+                    onClick={() => {
+                      setIsModalOpen(true);
+                      getMessages();
+                    }}
                   >
                     Chat with us
                   </button>
@@ -366,17 +458,19 @@ const Productpage = () => {
                           </button>
                         </div>
                         <div className="seller-name">
-                          <h2>Chat with Seller: {productInfo.name}</h2>
+                          <h2>
+                            Chat with Seller: {productInfo?.sellerUserName}
+                          </h2>
                         </div>
                         <div className="msg-container">
-                          <div className="chat-area">
+                          <div className="chat-area" ref={chatListRef}>
                             {/* <div className="chat-component-seller">
                           <div className="seller-chat">
                             <p>heyyyy</p>
                           </div>
                         </div> */}
                             {backendMessages.map((item) =>
-                              user1Id !== productInfo.userId ? (
+                              user1Id == item.senderId ? (
                                 <div className="chat-component-buyer">
                                   <div className="buyer-chat">
                                     <p>{item.message}</p>
@@ -417,7 +511,9 @@ const Productpage = () => {
                               onClick={(e) => {
                                 e.preventDefault();
                                 // setChatMessage(e);
-                                setInput(" ");
+                                setInput("");
+                                // clickSend();
+                                sendMsg();
                                 clickSend();
                               }}
                             >

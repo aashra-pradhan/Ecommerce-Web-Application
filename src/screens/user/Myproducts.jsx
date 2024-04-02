@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import Card from "../../components/Card";
-
+import apiRequest from "../../api/api_call";
 const Myproducts = () => {
   const [myProducts, setMyProducts] = useState([]);
   const accesstoken = JSON.parse(localStorage.getItem("access_token"));
@@ -9,26 +9,19 @@ const Myproducts = () => {
   const userId = localStorage.getItem("userId");
   const baseUrl = "https://ecommerce-backend-gr3e.onrender.com/api";
 
-  const getMyProducts = async () => {
-    const url = `${baseUrl}/user-products/${userId}`;
-    const config = {
-      headers: { Authorization: "Bearer " + accesstoken },
-      // not authorized to post bhanne error aairathyo, because accesstoken ta string ma liyrathyam loccal storage bata, because stringify garera store garirathyam local storge ma,,,,tara yaha ta json value mai chahincha bearer sanga so mathi access token lai json.parse garera yo problem solve bhayo
-    };
-
-    axios
-      .get(url, config)
-      .then((response) => {
-        console.log(response.data.data, "dai");
-        setMyProducts(response.data.data);
-      })
-      .catch(function (error) {
-        console.error(error);
-        console.log("Error is recognized!");
-      });
+  const apiDetails = {
+    urlEndpoint: `/user-products/${userId}`,
+    requestMethod: "GET",
+    authentication: true,
   };
+
+  async function apiGet() {
+    let getProducts = await apiRequest(apiDetails, null, null);
+    setMyProducts(getProducts.data.data);
+  }
+
   useEffect(() => {
-    getMyProducts();
+    apiGet();
   }, []);
 
   return (

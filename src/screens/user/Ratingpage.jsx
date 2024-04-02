@@ -7,9 +7,10 @@ import { CartContext } from "../../context/useCartContext";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import Feedback from "../../components/Feedback";
+import { FeedbackContext } from "../../context/useFeedbackContext";
 
 const Ratingpage = () => {
-  const [feedback, setFeedback] = useState({ success: false, message: "" });
+  const { feedback, setFeedback } = useContext(FeedbackContext);
   const [productInfo, setProductInfo] = useState({
     name: "",
     price: "",
