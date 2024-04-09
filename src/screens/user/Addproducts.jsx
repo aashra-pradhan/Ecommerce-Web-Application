@@ -229,7 +229,7 @@ const Addproducts = () => {
             <Button type={"submit"} value={"Add Product"} />
           </div>
         </form>
-        <Feedback success={feedback.success} message={feedback.message} />
+        {/* <Feedback success={feedback.success} message={feedback.message} /> */}
       </div>
     </>
   );

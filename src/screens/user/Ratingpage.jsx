@@ -8,6 +8,7 @@ import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import Feedback from "../../components/Feedback";
 import { FeedbackContext } from "../../context/useFeedbackContext";
+import { toast } from "react-toastify";
 
 const Ratingpage = () => {
   const { feedback, setFeedback } = useContext(FeedbackContext);
@@ -62,6 +63,12 @@ const Ratingpage = () => {
       .put(url, data, config)
       .then((response) => {
         console.log(response.data);
+        if (response.data.status == 200 || response.data.status == 201) {
+          toast.success(response.data.message);
+        } else {
+          toast.error(response.data.message);
+        }
+
         setFeedback({
           success: true,
           message: "Successfully reviewed product!",
@@ -91,11 +98,14 @@ const Ratingpage = () => {
       <div className="productcontainer">
         <div className="productbox">
           {productInfo?.productImages?.length > 0 && (
-            <img
-              className="prod-image"
-              src={productInfo?.productImages[0]?.url}
-              alt="productImage"
-            />
+            <div className="flex items-center last-min w-[800px]	">
+              <img
+                className="prod-image h-[600px] w-[500px]"
+                // src={productInfo?.productImages[0]?.url}
+                src={`https://source.unsplash.com/500x600/?${productInfo?.name}`}
+                alt="productImage"
+              />
+            </div>
           )}
 
           <div className="prodinfo">
@@ -125,7 +135,8 @@ const Ratingpage = () => {
               <textarea
                 type="text"
                 name="review"
-                className="review-input"
+                placeholder="Write your review here ..."
+                className="review-input p-2"
                 value={review}
                 onChange={(e) => {
                   setReview(e.target.value);
@@ -134,10 +145,10 @@ const Ratingpage = () => {
             </div>
 
             <div className="prod-box">
-              <p className="prod-title">Rating out of 5</p>
+              <p className="prod-title">Choose your rating out of 5</p>
               <input
                 type="number"
-                className="rating-input"
+                className="rating-input p-1"
                 min="1"
                 max="5"
                 value={rating}
@@ -148,14 +159,14 @@ const Ratingpage = () => {
             </div>
             <button
               type="button"
-              className="buy-button rounded border-slate-900 rounded-lg bg-green-100 mt-2 hover:cursor-pointer"
+              className="h-20 w-40 rounded border-slate-900 rounded-lg bg-green-100 hover:cursor-pointer text-lg font-medium flex items-center justify-center mt-5"
               onClick={() => {
                 postRating();
               }}
             >
               Submit
             </button>
-            <Feedback success={feedback.success} message={feedback.message} />
+            {/* <Feedback success={feedback.success} message={feedback.message} /> */}
           </div>
         </div>
       </div>

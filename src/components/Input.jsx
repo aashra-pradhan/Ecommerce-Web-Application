@@ -15,6 +15,7 @@ const Input = ({ labelname, errors, register, onBlur, type, name, value }) => {
         value={value}
       />
       <p>{errors[name]?.message}</p>
+      {/* schema kei abide by bhayena bhane yo error msg aaucha thyakka below the input field */}
     </>
   );
 };

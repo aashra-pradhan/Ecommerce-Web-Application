@@ -8,21 +8,26 @@ const Mypurchases = () => {
 
   return (
     <>
-      <div className="container mx-auto my-12">
-        <div className="grid grid-cols-4  gap-8">
-          {purchasedProducts?.map((pro) => {
-            return (
-              <Card
-                title={pro?.name}
-                link={`/ratingpage/${pro?.userId}/${pro?._id}`}
-                image={pro?.productImages[0]?.url}
-                shortDescription={pro?.shortDescription}
-                price={pro?.price}
-              />
-            );
-          })}
+      {purchasedProducts.length > 0 ? (
+        <div className="container flex justify-center">
+          <div className="grid grid-cols-4  gap-8">
+            {purchasedProducts?.map((pro) => {
+              return (
+                <Card
+                  title={pro?.name}
+                  link={`/ratingpage/${pro?.userId}/${pro?._id}`}
+                  // image={pro?.productImages[0]?.url}
+                  // image={`https://source.unsplash.com/250x180/?${pro?.name}`}
+                  shortDescription={pro?.shortDescription}
+                  price={pro?.price}
+                />
+              );
+            })}
+          </div>
         </div>
-      </div>
+      ) : (
+        <h1>No products purchased</h1>
+      )}
     </>
   );
 };

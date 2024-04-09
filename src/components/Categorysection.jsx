@@ -42,8 +42,8 @@ const Categorysection = ({ categoryId, title }) => {
       {productDetail.length ? (
         <>
           <h1 className="category-title">{title}</h1>
-          <div className="container mx-auto my-12">
-            <div className="grid grid-cols-4  gap-8">
+          <div className="container mx-auto my-12 ">
+            <div className="grid grid-cols-4 gap-6">
               {productDetail.map(
                 (pro) =>
                   userId !== pro.userId && (

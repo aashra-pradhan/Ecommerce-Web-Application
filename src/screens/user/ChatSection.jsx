@@ -65,31 +65,40 @@ const ChatSection = () => {
     <>
       <div className="chat-container">
         <div className="inside-chat-container">
-          <div className="title-chats">My Chats</div>
-          <div className="chat-name-list">
-            {/* {chatterNames.filter(
+          <div className="title-chats">Seller Chat Area</div>
+          {chatterNames.length > 0 ? (
+            <div className="chat-name-list">
+              {/* {chatterNames.filter(
               (obj, index) =>
                 chatterNames.findIndex((item) => item.id === obj.id) ===
                 index
             )} */}
-            {withoutDuplicates?.map((item) => {
-              return (
-                <>
-                  <div
-                    className="each-chatter-name"
-                    key={item?.id} // Add key prop here
-                    onClick={() => {
-                      setCustomerId(item?.id);
-                      setTalkerName(item?.userName);
-                      console.log(customerId, "www");
-                    }}
-                  >
-                    {item?.userName}
-                  </div>
-                </>
-              );
-            })}
-          </div>
+              {withoutDuplicates?.map((item) => {
+                return (
+                  <>
+                    <div
+                      className="each-chatter-name"
+                      key={item?.id} // Add key prop here
+                      onClick={() => {
+                        setCustomerId(item?.id);
+                        setTalkerName(item?.userName);
+                        console.log(customerId, "www");
+                      }}
+                    >
+                      {item?.userName}
+                    </div>
+                  </>
+                );
+              })}
+            </div>
+          ) : (
+            <div className=" font-medium mt-6 mx-5 bg-yellow-100 p-5">
+              <h1>
+                No customer has sent a text for product inquiries. If customers
+                text regarding product inquiries, they will be visible here.{" "}
+              </h1>
+            </div>
+          )}
         </div>
       </div>
       <div className="chat-bhitra-other-part">

@@ -47,7 +47,7 @@ const SearchResults = () => {
       ) : (
         <Navbar isLoggedIn={false} startingLetter={""} />
       )}
-      <div className="container mx-auto my-12">
+      <div className="container mx-10 mt-14">
         <div className="grid grid-cols-4  gap-8">
           {productDeets.map(
             (pro) =>

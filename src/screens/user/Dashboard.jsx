@@ -12,7 +12,7 @@ const Dashboard = () => {
             <div className="products">
               <NavLink
                 to="/dashboard/products"
-                className="dashboard-title text-white rounded-md px-5 mt-4 text-lg font-medium"
+                className="dashboard-title text-white rounded-md px-4 mt-4 text-md font-medium"
               >
                 Add Products
               </NavLink>
@@ -20,7 +20,7 @@ const Dashboard = () => {
             <div className="products">
               <NavLink
                 to="/dashboard/add-promo"
-                className="dashboard-title text-white rounded-md px-5 mt-4   text-lg font-medium"
+                className="dashboard-title text-white rounded-md px-4 mt-4   text-md font-medium"
               >
                 Add Promo
               </NavLink>
@@ -28,7 +28,7 @@ const Dashboard = () => {
             <div className="products">
               <NavLink
                 to="/dashboard/my-products"
-                className="dashboard-title text-white rounded-md px-5 mt-4 text-lg font-medium"
+                className="dashboard-title text-white rounded-md px-4 mt-4 text-md font-medium"
               >
                 My Products
               </NavLink>
@@ -37,7 +37,7 @@ const Dashboard = () => {
             <div className="products">
               <NavLink
                 to="/dashboard/my-purchases"
-                className="dashboard-title text-white rounded-md px-5 mt-4 text-lg font-medium"
+                className="dashboard-title text-white rounded-md px-4 mt-4 text-md font-medium"
               >
                 My Purchases
               </NavLink>
@@ -45,7 +45,7 @@ const Dashboard = () => {
             <div className="products">
               <NavLink
                 to="/dashboard/chat-section"
-                className="dashboard-title text-white rounded-md px-5 mt-4 text-lg font-medium"
+                className="dashboard-title text-white rounded-md px-4 mt-4 text-md font-medium"
               >
                 Chats
               </NavLink>

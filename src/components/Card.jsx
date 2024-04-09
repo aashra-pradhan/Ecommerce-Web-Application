@@ -6,10 +6,12 @@ const Card = ({ link, image, title, shortDescription, price }) => {
   return (
     <>
       <Link to={link}>
-        <div className=" relative product-card block rounded-lg bg-white shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07),0_10px_20px_-2px_rgba(0,0,0,0.04)] dark:bg-neutral-700 h-[320px] ">
+        <div className=" relative product-card block rounded-lg bg-white shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07),0_10px_20px_-2px_rgba(0,0,0,0.04)] dark:bg-neutral-700 h-[320px] w-[250px]">
           <img
             className="rounded-t-lg h-[180px] w-full object-contain"
-            src={image}
+            src={`https://source.unsplash.com/250x180/?${title}`}
+            //     ? image: //  { image
+            // }
             alt=""
           />
           {/* h-[180px] w-full(width:100%) object-contain -----esto gareko to make the card size fixed, jatrai pic size aayye ni*/}

@@ -95,14 +95,14 @@ const Addpromotion = () => {
 
   return (
     <>
-      <div className="addProducts-form">
+      <div className="addPromo-form">
         <p className="text-5xl p-5 font-thin text-slate-950 font-serif mb-8">
           Add Promo Banner
         </p>
         <form
           className="flex flex-col gap-5"
           onSubmit={handleSubmit(onSubmit)}
-          enctype="multipart/form-data"
+          // enctype="multipart/form-data"
         >
           <div>
             <Input
@@ -135,7 +135,7 @@ const Addpromotion = () => {
             <Button type={"submit"} value={"Add Banner"} />
           </div>
         </form>
-        <Feedback success={feedback.success} message={feedback.message} />
+        {/* <Feedback success={feedback.success} message={feedback.message} /> */}
       </div>
     </>
   );

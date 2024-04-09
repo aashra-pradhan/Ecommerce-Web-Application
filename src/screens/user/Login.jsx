@@ -87,43 +87,47 @@ function Login() {
 
   return (
     <>
-      <div className="bg-orange-400	h-[650px] w-[800px] rounded-lg border-4 border-black">
-        <p className="text-5xl p-5 font-thin text-slate-950 font-serif mb-8">
-          Login form
-        </p>
-        <form className="flex flex-col gap-5" onSubmit={handleSubmit(onSubmit)}>
-          {/* on form submission, react hook form ko euta built in method handleSubmit call garincha, ani tesle in turm onSubmit bhanne hamile banako funtion call gardincha, ani tyatai data bhanne object aaucha from the input fields after being registered. */}
-          {/* ani also yo e.preventdefault haru garirakhnuparena on submission cause yo sabai reacthookform ko useForm le nai milaidincha, validation haru yup le milaidincha */}
+      <div className="flex items-center justify-center mt-10">
+        <div className="bg-orange-400	h-[650px] w-[800px] rounded-lg p-5">
+          <p className="text-5xl p-5 font-thin text-slate-950 font-serif mb-8">
+            Login form
+          </p>
+          <form
+            className="flex flex-col gap-5"
+            onSubmit={handleSubmit(onSubmit)}
+          >
+            {/* on form submission, react hook form ko euta built in method handleSubmit call garincha, ani tesle in turm onSubmit bhanne hamile banako funtion call gardincha, ani tyatai data bhanne object aaucha from the input fields after being registered. */}
+            {/* ani also yo e.preventdefault haru garirakhnuparena on submission cause yo sabai reacthookform ko useForm le nai milaidincha, validation haru yup le milaidincha */}
 
-          <div>
-            <Input
-              labelname={"Email"}
-              type={"text"}
-              register={register}
-              errors={errors}
-              onBlur={onBlur}
-              name={"email"}
-            />
-          </div>
-          <div>
-            <Input
-              labelname={"Password"}
-              type={"password"}
-              register={register}
-              errors={errors}
-              onBlur={onBlur}
-              name={"password"}
-            />
-          </div>
+            <div>
+              <Input
+                labelname={"Email"}
+                type={"text"}
+                register={register}
+                errors={errors}
+                onBlur={onBlur}
+                name={"email"}
+              />
+            </div>
+            <div>
+              <Input
+                labelname={"Password"}
+                type={"password"}
+                register={register}
+                errors={errors}
+                onBlur={onBlur}
+                name={"password"}
+              />
+            </div>
 
-          <div className="pt-8">
-            <Button type={"submit"} value={"Login"} />
-          </div>
-        </form>
+            <div className="pt-8">
+              <Button type={"submit"} value={"Login"} />
+            </div>
+          </form>
 
-        {/* <Feedback success={feedback.success} message={feedback.message} /> */}
+          {/* <Feedback success={feedback.success} message={feedback.message} /> */}
+        </div>
       </div>
-
       {/* {api_hit.data.status === 200
         ? toast.success("Login success!", {
             position: "top-right",

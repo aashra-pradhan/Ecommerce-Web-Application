@@ -134,7 +134,7 @@ const ChatContainer = ({ customerId, talkerName }) => {
       <div className="chat-container-45">
         {/* Modal content */}
         {/* Close button */}
-        <div className="seller-name-chat">Chat with Seller: {talkerName}</div>
+        <div className="seller-name-chat">Chat with Customer: {talkerName}</div>
         {talkerName ? (
           <>
             <div className="msg-container-chat">
@@ -202,7 +202,7 @@ const ChatContainer = ({ customerId, talkerName }) => {
           <>
             <div className="h-full w-full flex justify-center items-center">
               <p className="font-bold text-xl">
-                Hey, no seller selected to chat with!
+                Hey, no customer selected to chat with!
               </p>
             </div>
           </>

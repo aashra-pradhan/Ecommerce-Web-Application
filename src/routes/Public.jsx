@@ -9,6 +9,8 @@ import Productpage from "../screens/user/Productpage";
 import SearchResults from "../screens/user/SearchResults";
 
 const Public = () => {
+  // const Home = lazy(() => import("../screens/user/Home"));
+
   return (
     <>
       {/* <NavLink to="/">Home</NavLink>
@@ -18,6 +20,7 @@ const Public = () => {
       <BrowserRouter>
         <Routes>
           <Route index element={<Home />} />
+
           <Route path="/product" element={<Productpage />} />
           <Route path="/product" element={<Productpage />} />
           <Route path="/products" element={<SearchResults />} />

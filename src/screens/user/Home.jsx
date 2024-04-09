@@ -7,6 +7,9 @@ import "react-multi-carousel/lib/styles.css";
 import BannerCarousel from "../../components/BannerCarousel";
 import Categorysection from "../../components/Categorysection";
 import apiRequest from "../../api/api_call";
+import Fallback from "../../components/Fallback";
+import { Suspense, lazy } from "react";
+
 const Home = () => {
   const [productInfo, setProductInfo] = useState([]);
   const [categories, setCategories] = useState([]);
@@ -76,6 +79,10 @@ const Home = () => {
   // useEffect(() => {
   //   getCategory();
   // }, []);
+  const BannerCarousel = lazy(() => import("../../components/BannerCarousel"));
+  const Categorysection = lazy(() =>
+    import("../../components/Categorysection")
+  );
 
   return (
     <>
@@ -84,12 +91,19 @@ const Home = () => {
       ) : (
         <Navbar isLoggedIn={false} startingLetter={""} />
       )}
-      <BannerCarousel images={promotionInfo} />
-      {categories.map((cat) => {
-        return (
-          <Categorysection title={cat.categoryName} categoryId={cat._id} />
-        );
-      })}
+      <Suspense fallback={<Fallback />}>
+        <BannerCarousel images={promotionInfo} />
+      </Suspense>
+
+      <div className="p-14">
+        {categories.map((cat) => {
+          return (
+            <Suspense fallback={<Fallback />}>
+              <Categorysection title={cat.categoryName} categoryId={cat._id} />
+            </Suspense>
+          );
+        })}
+      </div>
     </>
   );
 };

@@ -42,10 +42,10 @@ const BannerCarousel = ({ banner1, banner2, banner3, images }) => {
       ssr={true} // means to render carousel on server-side.
       infinite={true}
       autoPlay={true}
-      autoPlaySpeed={2000}
+      autoPlaySpeed={3000}
       keyBoardControl={true}
       customTransition="all .5"
-      transitionDuration={500}
+      transitionDuration={1000}
       containerClass="carousel-container"
       removeArrowOnDeviceType={["tablet", "mobile"]}
       dotListClass="custom-dot-list-style"
@@ -84,10 +84,30 @@ dotListClass: Defines the class name to be applied to the navigation dots.
 itemClass: Defines the class name to be applied to each carousel item. You can use this to style individual items in the carousel.
 
 Finally, within the Carousel component, there are <div> elements representing the slides/items in the carousel. The first slide contains an <img> element displaying the banner1 image, followed by three placeholder items labeled "Item 2", "Item 3", and "Item 4". These represent the content of the carousel slides. */}
-
-      {images.map((img) => {
-        return <img className="w-full object-cover h-[600px]" src={img.url} />;
-      })}
+      {/* {images.map((img) => { */}
+      {/* return ( */}
+      <img
+        className="w-full object-cover h-[500px]"
+        // src={img.url}
+        src="https://source.unsplash.com/1519x500/?cosmetics,makeup"
+      />
+      <img
+        className="w-full object-cover h-[500px]"
+        // src={img.url}
+        src="https://source.unsplash.com/1519x500/?music,clothes"
+      />
+      <img
+        className="w-full object-cover h-[500px]"
+        // src={img.url}
+        src="https://source.unsplash.com/1519x500/?fastfood,shops"
+      />
+      <img
+        className="w-full object-cover h-[500px]"
+        // src={img.url}
+        src="https://source.unsplash.com/1519x500/?wine,alcohol"
+      />
+      {/* ); */}
+      {/* })} */}
     </Carousel>
   );
 };

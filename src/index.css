@@ -10,12 +10,13 @@
 }
 body {
   height: 100vh;
+  margin: auto;
 }
-.navbar {
+/* .navbar {
   width: 100%;
   height: 60px;
   background-color: coral;
-}
+} */
 
 .nav-container {
   height: 100vh;
@@ -54,7 +55,11 @@ body {
   /* float: right; */
   height: 100vh;
   overflow: auto;
-  /* padding-top: 50px; */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  /* margin-top: 10px; */
+  padding-top: 50px;
 
   width: 91%;
   display: flex;
@@ -65,7 +70,7 @@ body {
 .dashboard-container {
   display: flex;
   height: 100vh;
-  overflow: auto;
+  /* overflow: auto; */
 }
 .side-bar-container {
   height: 100vh;
@@ -78,9 +83,19 @@ body {
 }
 
 .addProducts-form {
-  height: 100 vh;
+  height: auto;
+  margin-top: auto;
   width: 70%;
-  background-color: rgb(255, 143, 103);
+  background-color: coral;
+  border: 3px solid white;
+  border-radius: 25px;
+  padding: 50px;
+}
+
+.addPromo-form {
+  height: auto;
+  width: 70%;
+  background-color: coral;
   border: 3px solid white;
   border-radius: 25px;
   padding: 50px;
@@ -161,14 +176,15 @@ button:focus-visible {
 } */
 
 .productcontainer {
-  height: auto;
+  /* height: 400px; */
   display: flex;
-  /* justify-content: center;
-  align-items: center; */
+  width: 1500px;
+  justify-content: center;
+  align-items: center;
 }
 
 .productbox {
-  height: auto;
+  height: 800px;
   width: 80%;
   margin: 5%;
   border: 30px solid coral;
@@ -178,10 +194,10 @@ button:focus-visible {
 
 .prodinfo {
   float: right;
-  padding: 5%;
+  padding: 1%;
   /* background-color: pink; */
-  width: 60%;
-  height: 100%;
+  width: 80%;
+  height: inherit;
   display: flex;
   flex-direction: column;
   align-items: baseline;
@@ -189,11 +205,11 @@ button:focus-visible {
 }
 
 .prod-box {
-  margin: 2%;
+  margin: 10px;
 }
 
 .prod-title {
-  font-size: 130%;
+  font-size: 20px;
   font-weight: bold;
 }
 
@@ -216,14 +232,25 @@ button:focus-visible {
   flex-direction: row;
   width: fit-content;
   gap: 5%;
-  margin: 3%;
+  margin: 10px;
 }
 
 .button-box {
   display: flex;
   flex-direction: row;
-  width: 50%;
-  margin-top: 8%;
+  /* width: 50%; */
+  margin: 5%;
+  gap: 50px;
+}
+
+.last-min {
+  background-color: coral;
+}
+.button-box2 {
+  display: flex;
+  flex-direction: row;
+  /* width: 50%; */
+  margin: 5%;
   gap: 50px;
 }
 
@@ -247,7 +274,7 @@ button:focus-visible {
 .cart-nav {
   width: 100%;
   background-color: coral;
-  height: 80px;
+  height: 60px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -259,7 +286,7 @@ button:focus-visible {
 .cart-nav-button {
   width: 160px;
   height: 40px;
-  font-size: 50%;
+  font-size: 40%;
   font-family: Verdana, Geneva, Tahoma, sans-serif;
 }
 
@@ -316,8 +343,9 @@ Navlink {
 }
 
 .msg-container {
-  background-color: pink;
-  height: 86%;
+  /* background-color: bl; */
+  height: 90%;
+  margin-top: 5px;
 }
 
 .seller-name {
@@ -333,7 +361,7 @@ Navlink {
 .chat-area {
   margin-top: 2%;
   height: 85%;
-  background-color: aquamarine;
+  background-color: white;
   padding: 2%;
   overflow-y: scroll;
   /* to scrroll */
@@ -364,8 +392,8 @@ Navlink {
   margin-top: 2%;
   width: 50%;
   border-radius: 5px;
-  background-color: pink;
-  height: 40px;
+  background-color: coral;
+  height: auto;
   padding: 2%;
 }
 
@@ -373,8 +401,8 @@ Navlink {
   margin-top: 2%;
   width: 50%;
   border-radius: 5px;
-  background-color: red;
-  height: 40px;
+  background-color: rgb(218, 217, 217);
+  height: auto;
   padding: 2%;
 }
 
@@ -394,8 +422,8 @@ Navlink {
 }
 
 .msg-send-button {
-  background-color: blueviolet;
-  color: white;
+  background-color: yellow;
+  color: black;
   width: 12%;
   margin: 1%;
   border-radius: 5px;
@@ -425,7 +453,7 @@ Navlink {
 
 .review-input {
   border: 2px solid black;
-  height: 50px;
+  height: 60px;
   width: 400px;
   overflow-y: scroll;
 }
@@ -435,8 +463,8 @@ Navlink {
 }
 
 .review-container {
-  height: 150px;
-  width: 800px;
+  height: 60px;
+  width: 500px;
   overflow-y: scroll;
   margin-top: 2%;
   border: 2px solid black;
@@ -444,7 +472,7 @@ Navlink {
 }
 
 .review-messages {
-  background-color: coral;
+  background-color: rgb(253, 253, 143);
   color: black;
   font-weight: bold;
   border-radius: 5px;
@@ -472,26 +500,41 @@ Navlink {
   height: 40px;
   width: 400px;
   border-radius: 4px;
-  padding: 3px;
+  padding: 8px;
 }
 
 .search-button {
   background-color: yellow;
   color: black;
-  height: 40px;
+  height: 35px;
   width: 80px;
   border-radius: 4px;
   margin-left: 6px;
+  font-weight: 500;
 }
 
 .suggestion-dropdown {
-  height: 400px;
+  height: 350px;
   background-color: white;
-  width: 500px;
+  width: 480px;
   position: absolute;
-  top: 48px;
-  left: -1px;
+  top: 52px;
+  left: 305px;
   margin: 1px;
+  z-index: 2;
+  /* overflow-y: scroll; */
+}
+
+.suggestion-dropdown2 {
+  height: 350px;
+  background-color: white;
+  width: 480px;
+  position: absolute;
+  top: 52px;
+  left: 258px;
+  margin: 1px;
+  z-index: 2;
+  /* overflow-y: scroll; */
 }
 
 .suggestion-item {
@@ -504,6 +547,7 @@ Navlink {
 
 .suggestion-item:hover {
   background-color: coral;
+  color: white;
   opacity: 0.9;
   cursor: pointer;
 }
@@ -512,10 +556,17 @@ Navlink {
   height: 100vh;
   width: 29%;
   border: 5px solid pink;
+  border-top: 0px solid white;
+
+  border-left: 0px solid white;
   display: inline-block;
 }
 .chat-bhitra-other-part {
   border: 5px solid pink;
+  border-top: 0px solid white;
+
+  border-right: 0px solid white;
+
   width: 73%;
   height: 100vh;
 
@@ -695,7 +746,7 @@ Navlink {
 
   background-color: purple;
   width: 30px;
-  height: 30px;
+  height: 25px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -717,10 +768,39 @@ Navlink {
 }
 
 .each-noti {
-  padding: 2px;
+  padding: 8px;
   background-color: pink;
   height: 70px;
   width: 95%;
   margin: auto;
   border-radius: 10px;
+}
+
+.loader {
+  border: 8px solid #f3f3f3;
+  border-radius: 50%;
+  border-top: 8px solid red;
+  width: 80px;
+  height: 80px;
+  -webkit-animation: spin 2s linear infinite; /* Safari */
+  animation: spin 2s linear infinite;
+}
+
+/* Safari */
+@-webkit-keyframes spin {
+  0% {
+    -webkit-transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(360deg);
+  }
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }

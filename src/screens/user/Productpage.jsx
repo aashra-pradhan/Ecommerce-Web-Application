@@ -9,6 +9,7 @@ import { get, useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import Feedback from "../../components/Feedback";
 import socketIO from "socket.io-client";
+import { toast } from "react-toastify";
 
 const socket = socketIO.connect("https://ecommerce-backend-gr3e.onrender.com");
 const Productpage = () => {
@@ -205,11 +206,12 @@ const Productpage = () => {
       .then((response) => {
         console.log(response.data);
         navigate("/dashboard/my-products");
-        alert("Product edited");
+        toast.success("Product edited!");
       })
       .catch(function (error) {
         console.error(error);
         console.log("Error is recognized!");
+        toast.error("Error!");
       });
   };
 
@@ -225,11 +227,12 @@ const Productpage = () => {
       .then((response) => {
         console.log(response.data);
         navigate("/dashboard/my-products");
-        alert("Product deleted");
+        toast.success("Product deleted");
       })
       .catch(function (error) {
         console.error(error);
         console.log("Error is recognized!");
+        toast.error("Error");
       });
   };
 
@@ -265,226 +268,243 @@ const Productpage = () => {
       ) : (
         <Navbar isLoggedIn={false} startingLetter={""} />
       )}
-      <div className="productcontainer">
-        <div className="productbox">
-          {productInfo?.productImages?.length > 0 && (
-            <img
-              className="prod-image"
-              src={productInfo?.productImages[0]?.url}
-              alt="productImage"
-            />
-          )}
-
-          <div className="prodinfo">
-            <div className="prod-box">
-              <p className="prod-title">Product name</p>
-              {edit.value ? (
-                <input
-                  type="text"
-                  className="my-product-edit"
-                  value={editedProduct.name}
-                  onChange={(e) => {
-                    setEditedProduct({
-                      ...editedProduct,
-                      name: e.target.value,
-                    });
-                  }}
+      <div className="flex items-center justify-center">
+        <div className="productcontainer">
+          <div className="productbox">
+            {productInfo?.productImages?.length > 0 && (
+              <div className="last-min flex items-center w-[800px]	">
+                <img
+                  className="prod-image h-[600px] w-[500px]"
+                  // src={productInfo?.productImages[0]?.url}
+                  src={`https://source.unsplash.com/500x600/?${productInfo?.name}`}
+                  alt="productImage"
                 />
-              ) : (
-                <p className="prod-bhitra">{productInfo?.name}</p>
-              )}
-            </div>
-            <div className="prod-box">
-              <p className="prod-title">Price</p>
-              {edit.value ? (
-                <input
-                  type="text"
-                  className="my-product-edit"
-                  value={editedProduct.price}
-                  onChange={(e) => {
-                    setEditedProduct({
-                      ...editedProduct,
-                      price: e.target.value,
-                    });
-                  }}
-                />
-              ) : (
-                <p className="prod-bhitra">{productInfo?.price}</p>
-              )}
-            </div>
-            <div className="prod-box">
-              <p className="prod-title">Quantity available</p>
-              {edit.value ? (
-                <input
-                  type="number"
-                  className="my-product-edit"
-                  min="1"
-                  value={editedProduct.quantity}
-                  onChange={(e) => {
-                    setEditedProduct({
-                      ...editedProduct,
-                      quantity: e.target.value,
-                    });
-                  }}
-                />
-              ) : (
-                <p className="prod-bhitra">{productInfo?.quantity}</p>
-              )}
-            </div>
-            <div className="prod-box">
-              <p className="prod-title">Description</p>
-              {edit.value ? (
-                <input
-                  type="text"
-                  className="my-product-edit"
-                  value={editedProduct.description}
-                  onChange={(e) => {
-                    setEditedProduct({
-                      ...editedProduct,
-                      description: e.target.value,
-                    });
-                  }}
-                />
-              ) : (
-                <p className="prod-bhitra">{productInfo?.description}</p>
-              )}
-            </div>
-            {!edit.value ? (
-              <>
-                <div className="prod-box">
-                  <p className="prod-title">Rating</p>
-                  <p className="prod-bhitra">{productInfo?.rating}</p>
-                </div>
-              </>
-            ) : (
-              ""
+              </div>
             )}
-            {user1Id !== productInfo.userId ? (
-              <>
-                <div className="quantity-box">
-                  <p className="prod-title">Quantity</p>
-                  <button
-                    className="rounded w-full border-slate-900 rounded-lg bg-green-100 mt-2 hover:cursor-pointer counter-button"
-                    disabled={quantityCount <= 1}
-                    onClick={() => {
-                      setQuantityCount((prevCount) => prevCount - 1);
-                    }}
-                  >
-                    -
-                  </button>
 
+            <div className="prodinfo">
+              <div className="prod-box">
+                <p className="prod-title">Product name</p>
+                {edit.value ? (
                   <input
-                    className="quantity-input"
-                    type="number"
-                    min="1"
-                    max={productInfo?.quantity}
-                    value={quantityCount}
+                    type="text"
+                    className="my-product-edit"
+                    value={editedProduct.name}
                     onChange={(e) => {
-                      const value = parseInt(e.target.value);
-                      setQuantityCount(
-                        value <= productInfo?.quantity ? value : 1
-                      );
+                      setEditedProduct({
+                        ...editedProduct,
+                        name: e.target.value,
+                      });
                     }}
                   />
-                  <button
-                    className="rounded w-full border-slate-900 rounded-lg bg-green-100 mt-2 hover:cursor-pointer counter-button"
-                    disabled={quantityCount >= productInfo?.quantity}
-                    onClick={() => {
-                      setQuantityCount((prevCount) => prevCount + 1);
-                    }}
-                  >
-                    +
-                  </button>
-                </div>
-                {!edit.value ? (
-                  <>
-                    <div className="prod-box">
-                      <p className="prod-title">
-                        Reviews ({productInfo?.numOfRatings})
-                      </p>
-                      <div className="review-container">
-                        {productInfo?.reviews?.map((item) => (
-                          <div className="review-messages">{item.message}</div>
-                        ))}
-                      </div>
-                    </div>
-                  </>
                 ) : (
-                  ""
+                  <p className="prod-bhitra">{productInfo?.name}</p>
                 )}
-                <div className="button-box">
-                  <button
-                    type="submit"
-                    className="buy-button rounded border-slate-900 rounded-lg bg-green-100 mt-2 hover:cursor-pointer"
-                    onClick={() => {
-                      alert("Added to cart!");
-                      addToCart(updatedProductInfo);
+              </div>
+              <div className="prod-box">
+                <p className="prod-title">Price</p>
+                {edit.value ? (
+                  <input
+                    type="text"
+                    className="my-product-edit"
+                    value={editedProduct.price}
+                    onChange={(e) => {
+                      setEditedProduct({
+                        ...editedProduct,
+                        price: e.target.value,
+                      });
                     }}
-                  >
-                    Add to Cart
-                  </button>
+                  />
+                ) : (
+                  <p className="prod-bhitra">{productInfo?.price}</p>
+                )}
+              </div>
+              <div className="prod-box">
+                <p className="prod-title">Quantity available</p>
+                {edit.value ? (
+                  <input
+                    type="number"
+                    className="my-product-edit"
+                    min="1"
+                    value={editedProduct.quantity}
+                    onChange={(e) => {
+                      setEditedProduct({
+                        ...editedProduct,
+                        quantity: e.target.value,
+                      });
+                    }}
+                  />
+                ) : (
+                  <p className="prod-bhitra">{productInfo?.quantity}</p>
+                )}
+              </div>
+              <div className="prod-box">
+                <p className="prod-title">Description</p>
+                {edit.value ? (
+                  <input
+                    type="text"
+                    className="my-product-edit"
+                    value={editedProduct.description}
+                    onChange={(e) => {
+                      setEditedProduct({
+                        ...editedProduct,
+                        description: e.target.value,
+                      });
+                    }}
+                  />
+                ) : (
+                  <p className="prod-bhitra">{productInfo?.description}</p>
+                )}
+              </div>
+              {!edit.value ? (
+                <>
+                  <div className="prod-box">
+                    <p className="prod-title">Rating</p>
+                    <p className="prod-bhitra">{productInfo?.rating}</p>
+                  </div>
+                </>
+              ) : (
+                ""
+              )}
+              {user1Id !== productInfo.userId ? (
+                <>
+                  <div className="quantity-box">
+                    <p className="prod-title">Quantity</p>
+                    <button
+                      className="rounded w-full border-slate-900 rounded-lg bg-green-100 mt-2 hover:cursor-pointer counter-button"
+                      disabled={quantityCount <= 1}
+                      onClick={() => {
+                        setQuantityCount((prevCount) => prevCount - 1);
+                      }}
+                    >
+                      -
+                    </button>
 
-                  <NavLink to="/product/purchase">
+                    <input
+                      className="quantity-input"
+                      type="number"
+                      min="1"
+                      max={productInfo?.quantity}
+                      value={quantityCount}
+                      onChange={(e) => {
+                        const value = parseInt(e.target.value);
+                        setQuantityCount(
+                          value <= productInfo?.quantity ? value : 1
+                        );
+                      }}
+                    />
+                    <button
+                      className="rounded w-full border-slate-900 rounded-lg bg-green-100 mt-2 hover:cursor-pointer counter-button"
+                      disabled={quantityCount >= productInfo?.quantity}
+                      onClick={() => {
+                        setQuantityCount((prevCount) => prevCount + 1);
+                      }}
+                    >
+                      +
+                    </button>
+                  </div>
+                  {!edit.value ? (
+                    <>
+                      <div className="prod-box">
+                        <p className="prod-title">
+                          Reviews ({productInfo?.numOfRatings})
+                        </p>
+                        <div className="review-container">
+                          {productInfo?.reviews?.map((item) => (
+                            <div className="review-messages">
+                              {item.message}
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    </>
+                  ) : (
+                    ""
+                  )}
+                  <div className="button-box">
                     <button
                       type="submit"
                       className="buy-button rounded border-slate-900 rounded-lg bg-green-100 mt-2 hover:cursor-pointer"
                       onClick={() => {
-                        setActiveProduct([updatedProductInfo]);
+                        if (accesstoken) {
+                          toast.success("Added to cart");
+                          addToCart(updatedProductInfo);
+                        } else {
+                          navigate("/login");
+                          toast.error(
+                            "User must be logged in to use the cart!"
+                          );
+                        }
                       }}
                     >
-                      Buy now
+                      Add to Cart
                     </button>
-                  </NavLink>
 
-                  <button
-                    type="button"
-                    className="buy-button rounded border-slate-900 rounded-lg bg-green-100 mt-2 hover:cursor-pointer"
-                    onClick={() => {
-                      setIsModalOpen(true);
-                      getMessages();
-                    }}
-                  >
-                    Chat with us
-                  </button>
+                    <NavLink to={accesstoken ? "/product/purchase" : "/login"}>
+                      <button
+                        type="submit"
+                        className="buy-button rounded border-slate-900 rounded-lg bg-green-100 mt-2 hover:cursor-pointer"
+                        onClick={() => {
+                          setActiveProduct([updatedProductInfo]);
+                        }}
+                      >
+                        Buy now
+                      </button>
+                    </NavLink>
 
-                  {isModalOpen && (
-                    <div className="modal-container">
-                      <div className="modal">
-                        {/* Modal content */}
-                        {/* Close button */}
-                        <div className="msg-navbar">
-                          <button onClick={() => setIsModalOpen(false)}>
-                            x
-                          </button>
-                        </div>
-                        <div className="seller-name">
-                          <h2>
-                            Chat with Seller: {productInfo?.sellerUserName}
-                          </h2>
-                        </div>
-                        <div className="msg-container">
-                          <div className="chat-area" ref={chatListRef}>
-                            {/* <div className="chat-component-seller">
+                    <button
+                      type="button"
+                      className="buy-button rounded border-slate-900 rounded-lg bg-green-100 mt-2 hover:cursor-pointer"
+                      onClick={() => {
+                        if (accesstoken) {
+                          setIsModalOpen(true);
+                          getMessages();
+                        } else {
+                          navigate("/login");
+                        }
+                      }}
+                    >
+                      Chat with us
+                    </button>
+
+                    {isModalOpen && (
+                      <div className="modal-container">
+                        <div className="modal">
+                          {/* Modal content */}
+                          {/* Close button */}
+                          <div className="msg-navbar">
+                            <button onClick={() => setIsModalOpen(false)}>
+                              x
+                            </button>
+                          </div>
+                          <div className="seller-name">
+                            <h2>
+                              Chat with Seller: {productInfo?.sellerUserName}
+                            </h2>
+                          </div>
+                          <div className="msg-container">
+                            <div className="chat-area" ref={chatListRef}>
+                              {/* <div className="chat-component-seller">
                           <div className="seller-chat">
                             <p>heyyyy</p>
                           </div>
                         </div> */}
-                            {backendMessages.map((item) =>
-                              user1Id == item.senderId ? (
-                                <div className="chat-component-buyer">
-                                  <div className="buyer-chat">
-                                    <p>{item.message}</p>
+                              {backendMessages.map((item) =>
+                                user1Id == item.senderId ? (
+                                  <div className="chat-component-buyer">
+                                    <div className="buyer-chat">
+                                      <p>{item.message}</p>
+                                    </div>
                                   </div>
-                                </div>
-                              ) : (
-                                <div className="chat-component-seller">
-                                  <div className="seller-chat">
-                                    <p>{item.message}</p>
+                                ) : (
+                                  <div className="chat-component-seller">
+                                    <div className="seller-chat">
+                                      <p>{item.message}</p>
+                                    </div>
                                   </div>
-                                </div>
-                              )
-                            )}
-                            {/* {chatMessage ? (
+                                )
+                              )}
+                              {/* {chatMessage ? (
                           <>
                             {" "}
                             <div className="chat-component-buyer">
@@ -494,82 +514,83 @@ const Productpage = () => {
                             </div>
                           </>
                         ) : null} */}
-                          </div>
-                          <div className="typing-box">
-                            <input
-                              value={input}
-                              type="text"
-                              className="typing"
-                              onChange={(e) => {
-                                setChatMessage(e.target.value);
-                                setInput(e.target.value);
-                              }}
-                            />
-                            <button
-                              type="submit"
-                              className="msg-send-button"
-                              onClick={(e) => {
-                                e.preventDefault();
-                                // setChatMessage(e);
-                                setInput("");
-                                // clickSend();
-                                sendMsg();
-                                clickSend();
-                              }}
-                            >
-                              Send
-                            </button>
+                            </div>
+                            <div className="typing-box">
+                              <input
+                                value={input}
+                                type="text"
+                                className="typing"
+                                onChange={(e) => {
+                                  setChatMessage(e.target.value);
+                                  setInput(e.target.value);
+                                }}
+                              />
+                              <button
+                                type="submit"
+                                className="msg-send-button"
+                                onClick={(e) => {
+                                  e.preventDefault();
+                                  // setChatMessage(e);
+                                  setInput("");
+                                  // clickSend();
+                                  sendMsg();
+                                  clickSend();
+                                }}
+                              >
+                                Send
+                              </button>
+                            </div>
                           </div>
                         </div>
                       </div>
-                    </div>
-                  )}
-                </div>
-              </>
-            ) : (
-              <>
-                <div className="button-box">
-                  {edit.value ? (
+                    )}
+                  </div>
+                </>
+              ) : (
+                <>
+                  <div className="button-box2">
+                    {edit.value ? (
+                      <button
+                        className="buy-button rounded border-slate-900 rounded-lg bg-green-100 mt-2 hover:cursor-pointer"
+                        onClick={() => {
+                          setEdit({ value: !edit.value });
+                          console.log(editedProduct, "editt");
+                        }}
+                      >
+                        Back
+                      </button>
+                    ) : (
+                      <button
+                        className="buy-button rounded border-slate-900 rounded-lg bg-green-100 mt-2 hover:cursor-pointer"
+                        onClick={() => {
+                          setEdit({ value: !edit.value });
+                        }}
+                      >
+                        Edit item
+                      </button>
+                    )}
+                    {edit.value ? (
+                      <button
+                        className="buy-button rounded border-slate-900 rounded-lg bg-green-100 mt-2 hover:cursor-pointer w-auto"
+                        onClick={() => {
+                          clickEditDone();
+                        }}
+                      >
+                        Done{" "}
+                      </button>
+                    ) : null}
                     <button
-                      className="buy-button rounded border-slate-900 rounded-lg bg-green-100 mt-2 hover:cursor-pointer"
+                      className="buy-button rounded border-slate-900 rounded-lg bg-green-100 mt-2 hover:cursor-pointer w-auto"
                       onClick={() => {
-                        setEdit({ value: !edit.value });
-                        console.log(editedProduct, "editt");
+                        clickDelete();
                       }}
                     >
-                      Back
+                      Delete item
                     </button>
-                  ) : (
-                    <button
-                      className="buy-button rounded border-slate-900 rounded-lg bg-green-100 mt-2 hover:cursor-pointer"
-                      onClick={() => {
-                        setEdit({ value: !edit.value });
-                      }}
-                    >
-                      Edit product
-                    </button>
-                  )}
-                  {edit.value ? (
-                    <button
-                      className="buy-button rounded border-slate-900 rounded-lg bg-green-100 mt-2 hover:cursor-pointer"
-                      onClick={() => {
-                        clickEditDone();
-                      }}
-                    >
-                      Edit product
-                    </button>
-                  ) : null}
-                  <button
-                    className="buy-button rounded border-slate-900 rounded-lg bg-green-100 mt-2 hover:cursor-pointer"
-                    onClick={() => {
-                      clickDelete();
-                    }}
-                  >
-                    Delete product
-                  </button>
-                </div>
-              </>
-            )}
+                  </div>
+                </>
+              )}
+            </div>
           </div>
         </div>
       </div>
