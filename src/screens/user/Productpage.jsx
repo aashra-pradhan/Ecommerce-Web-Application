@@ -10,6 +10,7 @@ import { useNavigate } from "react-router-dom";
 import Feedback from "../../components/Feedback";
 import socketIO from "socket.io-client";
 import { toast } from "react-toastify";
+import { LazyLoadImage } from "react-lazy-load-image-component";
 
 const socket = socketIO.connect("https://ecommerce-backend-gr3e.onrender.com");
 const Productpage = () => {
@@ -278,7 +279,15 @@ const Productpage = () => {
                   // src={productInfo?.productImages[0]?.url}
                   src={`https://source.unsplash.com/500x600/?${productInfo?.name}`}
                   alt="productImage"
+                  loading="lazy"
                 />
+                {/* <LazyLoadImage
+                  className="prod-image h-[600px] w-[500px]"
+                  // src={productInfo?.productImages[0]?.url}
+                  src={`https://source.unsplash.com/500x600/?${productInfo?.name}`}
+                  alt="productImage"
+                  loading="lazy"
+                /> */}
               </div>
             )}
 

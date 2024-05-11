@@ -37,6 +37,7 @@ function Login() {
     requestMethod: "POST",
     authentication: false,
   };
+
   const onSubmit = async (formData) => {
     // const url = `${baseUrl}/auth/login`;
     const reqData = {
@@ -50,13 +51,10 @@ function Login() {
 
     //esari bhanda ni localstorage ma userDetails bhanera object nai banaidera yi details haru tyo object ko bhitra rakhdeko ramro practise
     //ani harek page ma aile hamile localstorage bata get gardai yiniharulai access gariracham ni
-    //aba pachi context api(vimp concept) sikepachi, tyo details context api ma store garera pplication bhari use garna sakcham
+    //aba pachi context api(vimp concept) sikepachi, tyo details context api ma store garera application bhari use garna sakcham
 
-    console.log(data1, "check12");
-
-    if (data1.status == 200 || data1.status == 201) {
+    if (data1.status === 200 || data1.status === 201) {
       toast.success(data1.data.message);
-
       localStorage.setItem("email", data1.data.data.data.email);
       localStorage.setItem("fullName", data1.data.data.data.fullName);
       localStorage.setItem("userId", data1.data.data.data._id);
@@ -76,8 +74,6 @@ function Login() {
 
       navigate("/"); //home bhanekai / ho, so home ma redirect gardincha ani navigate(0) le reload garaidincha so aba private home page dekhcha not public home page
       navigate(0);
-    } else {
-      toast.error(data1.data.message);
     }
 
     // khasma navigate ya redirect bhanne kura j use garne tarika ni tei ho kam hune ni tei ho, kei differences chai hola but aile ko lai tei ho bujha

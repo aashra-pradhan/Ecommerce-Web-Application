@@ -144,8 +144,8 @@ const Addproducts = () => {
 
   return (
     <>
-      <div className="addProducts-form">
-        <p className="text-5xl p-5 font-thin text-slate-950 font-serif mb-8">
+      <div className="addProducts-form sm:p-0">
+        <p className="text-5xl p-5 font-thin text-slate-950 font-serif mb-8 sm:text-3xl sm:p-3 sm:pt-5">
           Add Products
         </p>
         <form
@@ -153,7 +153,7 @@ const Addproducts = () => {
           onSubmit={handleSubmit(onSubmit)}
           enctype="multipart/form-data"
         >
-          <div>
+          <div className="sm:p-2">
             <Input
               labelname={"Product Name"}
               type={"text"}
@@ -162,7 +162,7 @@ const Addproducts = () => {
               name={"name"}
             />
           </div>
-          <div>
+          <div className="sm:p-2">
             <Input
               labelname={"Quantity"}
               type={"text"}
@@ -171,7 +171,7 @@ const Addproducts = () => {
               name={"quantity"}
             />
           </div>
-          <div>
+          <div className="sm:p-2">
             <label
               className="block text-xl font-serif text-slate-950"
               htmlFor=""
@@ -189,7 +189,7 @@ const Addproducts = () => {
               ))}
             </select>
           </div>
-          <div>
+          <div className="sm:p-2">
             <Input
               labelname={"Price"}
               type={"text"}
@@ -198,7 +198,7 @@ const Addproducts = () => {
               name={"price"}
             />
           </div>
-          <div>
+          <div className="sm:p-2">
             <Input
               labelname={"Product Images"}
               type={"file"}
@@ -207,7 +207,7 @@ const Addproducts = () => {
               name={"images"}
             />
           </div>
-          <div>
+          <div className="sm:p-2">
             <Input
               labelname={"Description"}
               type={"text"}
@@ -216,7 +216,7 @@ const Addproducts = () => {
               name={"description"}
             />
           </div>
-          <div>
+          <div className="sm:p-2">
             <Input
               labelname={"Short Description"}
               type={"text"}
@@ -225,7 +225,7 @@ const Addproducts = () => {
               name={"shortDescription"}
             />
           </div>
-          <div className="pt-8">
+          <div className="pt-8 sm:flex sm:items-center sm:justify-center sm:p-5">
             <Button type={"submit"} value={"Add Product"} />
           </div>
         </form>

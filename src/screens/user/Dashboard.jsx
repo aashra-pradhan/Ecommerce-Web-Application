@@ -7,12 +7,12 @@ const Dashboard = () => {
   return (
     <>
       <div className="dashboard-container">
-        <div className="side-bar">
+        <div className="side-bar sm:w-[74px] ">
           <div className="side-bar-container">
-            <div className="products">
+            <div className="products ">
               <NavLink
                 to="/dashboard/products"
-                className="dashboard-title text-white rounded-md px-4 mt-4 text-md font-medium"
+                className="dashboard-title text-white rounded-md px-4 mt-4 text-md font-medium "
               >
                 Add Products
               </NavLink>
@@ -22,7 +22,7 @@ const Dashboard = () => {
                 to="/dashboard/add-promo"
                 className="dashboard-title text-white rounded-md px-4 mt-4   text-md font-medium"
               >
-                Add Promo
+                Add Promotion
               </NavLink>
             </div>
             <div className="products">

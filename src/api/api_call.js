@@ -2,7 +2,7 @@
 //but actually j use garda ni huncha
 //yo js file ma functions banayera basicaly euta function lai default export gareko cham, code sarra hera, you will understand.
 import axios from "axios";
-// import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 // const refreshToken = JSON.parse(localStorage.getItem("refresh_token"));
@@ -102,9 +102,16 @@ const apiRequest = async (apiDetails, reqData, params) => {
       params: params,
     };
   }
-  let apiResponse = await axios.request(axiosPayload);
-  console.log(apiResponse.status, "heyy");
+  try {
+    let apiResponse = await axios.request(axiosPayload);
+    // toast.success(error.response.data.message);
+    return apiResponse;
 
+    // console.log(apiResponse.status, "heyy");
+  } catch (error) {
+    console.log(error.response.data.message, "errors");
+    toast.error(error.response.data.message);
+  }
   // .then((response) => {
   //   console.log(response.data, "res");
   //   if (response) {
@@ -114,9 +121,7 @@ const apiRequest = async (apiDetails, reqData, params) => {
   //   }
   // })
   // .catch((error) => error);
-  console.log(apiResponse, "hello");
-
-  return apiResponse;
+  // console.log(apiResponse, "hello");
 };
 
 export default apiRequest;
