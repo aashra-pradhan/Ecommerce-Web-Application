@@ -121,8 +121,7 @@ const Ratingpage = () => {
               <p className="prod-title">Quantity purchased</p>
 
               <p className="prod-bhitra">
-                1 ==(used static value 1 here since aile quantity:1 matra kinna
-                miliracha api ma)
+                1
               </p>
             </div>
             <div className="prod-box">
